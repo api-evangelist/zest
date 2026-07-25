@@ -1,0 +1,65 @@
+openapi: 3.1.0
+info:
+  title: Zest equity public api Authentication System API
+  version: 0.1.0
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+servers:
+- url: https://sandbox-api.zestequity.com
+  description: Staging
+tags:
+- name: System
+  description: Service health and OpenAPI introspection endpoints.
+paths:
+  /:
+    get:
+      tags:
+      - System
+      summary: Root endpoint
+      operationId: root
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /public/hc:
+    get:
+      tags:
+      - System
+      summary: Outside world health check endpoint
+      operationId: health_check
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /openapi.json:
+    get:
+      tags:
+      - System
+      summary: OpenAPI Endpoint Specifications
+      operationId: openapi
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /docs:
+    get:
+      tags:
+      - System
+      summary: API Endpoints Documentation
+      operationId: swagger
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

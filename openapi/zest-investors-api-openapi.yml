@@ -1,0 +1,243 @@
+openapi: 3.1.0
+info:
+  title: Zest equity public api Authentication Investors API
+  version: 0.1.0
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+servers:
+- url: https://sandbox-api.zestequity.com
+  description: Staging
+tags:
+- name: Investors
+  description: Bulk-create investor records with partial-success semantics. Each row carries its own status / error envelope so a single bad row never fails the batch.
+paths:
+  /v1/investors:
+    post:
+      tags:
+      - Investors
+      summary: Bulk create investors
+      description: 'Creates one or more investor records. Always returns 200 with a per-row { status, zestPersonId | error } result keyed by `partnerInvestorId`. Idempotent across replays: a repeated `partnerInvestorId` returns the existing Zest person id. `Idempotency-Key` is optional and provides response-level caching.'
+      operationId: bulkCreateInvestors
+      parameters:
+      - required: false
+        schema:
+          type: string
+          title: Idempotency-Key
+        name: Idempotency-Key
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvestorBulkCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvestorBulkResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '403':
+          description: Service not provisioned for partner API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '409':
+          description: Idempotency-Key conflict (different body)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    InvestorRowResult:
+      properties:
+        partnerInvestorId:
+          type: string
+          title: Partnerinvestorid
+        status:
+          type: string
+          title: Status
+        zestPersonId:
+          type: string
+          title: Zestpersonid
+        error:
+          $ref: '#/components/schemas/InvestorRowError'
+      type: object
+      required:
+      - partnerInvestorId
+      - status
+      title: InvestorRowResult
+    PartnerValidationError:
+      properties:
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
+      type: object
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    InvestorBulkCreate:
+      properties:
+        investors:
+          items:
+            $ref: '#/components/schemas/InvestorCreateRow'
+          type: array
+          title: Investors
+      type: object
+      required:
+      - investors
+      title: InvestorBulkCreate
+    InvestorCreateRow:
+      properties:
+        partnerInvestorId:
+          type: string
+          title: Partnerinvestorid
+          description: Stable partner-side investor identifier; used for response correlation + dedupe.
+          example: acme-inv-7341
+        email:
+          type: string
+          title: Email
+          example: alice@example.com
+        firstName:
+          type: string
+          title: Firstname
+          example: Alice
+        lastName:
+          type: string
+          title: Lastname
+          example: Liddell
+        dateOfBirth:
+          type: string
+          title: Dateofbirth
+          description: ISO date YYYY-MM-DD.
+          example: '1985-04-12'
+        countryOfResidence:
+          type: string
+          title: Countryofresidence
+          description: ISO 3166 alpha-2 country code.
+          example: AE
+      type: object
+      required:
+      - partnerInvestorId
+      - email
+      - firstName
+      - lastName
+      - dateOfBirth
+      title: InvestorCreateRow
+    PartnerErrorResponse:
+      properties:
+        detail:
+          type: string
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
+      type: object
+      required:
+      - code
+      title: PartnerErrorResponse
+    InvestorBulkResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/InvestorRowResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: InvestorBulkResponse
+    InvestorRowError:
+      properties:
+        code:
+          type: string
+          title: Code
+        field:
+          type: string
+          title: Field
+        message:
+          type: string
+          title: Message
+        retryable:
+          type: boolean
+          title: Retryable
+      type: object
+      required:
+      - code
+      - message
+      - retryable
+      title: InvestorRowError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

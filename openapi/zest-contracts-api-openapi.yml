@@ -1,0 +1,284 @@
+openapi: 3.1.0
+info:
+  title: Zest equity public api Authentication Contracts API
+  version: 0.1.0
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+servers:
+- url: https://sandbox-api.zestequity.com
+  description: Staging
+tags:
+- name: Contracts
+  description: Read-only access to the spaas-contract registry (templates, catalogs, primitives, samples) used to validate SPV-request `attributes`.
+paths:
+  /v1/contracts:
+    get:
+      tags:
+      - Contracts
+      summary: List available contract versions
+      operationId: list_contract_versions_v1_contracts_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /v1/contracts/templates/{version}:
+    get:
+      tags:
+      - Contracts
+      summary: List template definitions for a version
+      operationId: list_templates_v1_contracts_templates__version__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contracts/templates/{version}/{template_name}:
+    get:
+      tags:
+      - Contracts
+      summary: Retrieve a specific template
+      operationId: get_template_v1_contracts_templates__version___template_name__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Template Name
+        name: template_name
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contracts/catalogs/{version}:
+    get:
+      tags:
+      - Contracts
+      summary: List attribute catalogs for a version
+      operationId: list_catalogs_v1_contracts_catalogs__version__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contracts/catalogs/{version}/{catalog_name}:
+    get:
+      tags:
+      - Contracts
+      summary: Retrieve a specific attribute catalog
+      operationId: get_catalog_v1_contracts_catalogs__version___catalog_name__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Catalog Name
+        name: catalog_name
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contracts/primitives/{version}:
+    get:
+      tags:
+      - Contracts
+      summary: List primitive/type specifications for a version
+      operationId: list_primitives_v1_contracts_primitives__version__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contracts/primitives/{version}/{primitive_name}:
+    get:
+      tags:
+      - Contracts
+      summary: Retrieve a primitive/type definition
+      operationId: get_primitive_v1_contracts_primitives__version___primitive_name__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Primitive Name
+        name: primitive_name
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contracts/samples/{version}:
+    get:
+      tags:
+      - Contracts
+      summary: List sample payloads for a version
+      operationId: list_samples_v1_contracts_samples__version__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contracts/samples/{version}/{sample_name}:
+    get:
+      tags:
+      - Contracts
+      summary: Retrieve a sample payload
+      operationId: get_sample_v1_contracts_samples__version___sample_name__get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Version
+        name: version
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Sample Name
+        name: sample_name
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

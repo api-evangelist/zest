@@ -1,0 +1,135 @@
+openapi: 3.1.0
+info:
+  title: Zest equity public api Authentication API
+  version: 0.1.0
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+servers:
+- url: https://sandbox-api.zestequity.com
+  description: Staging
+tags:
+- name: Authentication
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+paths:
+  /v1/oauth2/tokens:
+    post:
+      tags:
+      - Authentication
+      summary: Exchange a JWT assertion for an access token
+      description: OAuth 2.0 JWT-Bearer assertion grant. Submit `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer` plus a signed JWT `assertion`. Returns a short-lived bearer access token used for subsequent partner API calls.
+      operationId: exchangeJwtAssertion
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_exchangeJwtAssertion'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/oauth2/info:
+    get:
+      tags:
+      - Authentication
+      summary: Inspect the current access token
+      description: Returns metadata about the bearer token currently presented in the Authorization header. Useful for verifying that a token corresponds to the expected partner application.
+      operationId: getOauth2Info
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoResponse'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TokenResponse:
+      properties:
+        accessToken:
+          type: string
+          title: Accesstoken
+        refreshToken:
+          type: string
+          title: Refreshtoken
+      type: object
+      required:
+      - accessToken
+      title: TokenResponse
+    Body_exchangeJwtAssertion:
+      properties:
+        grant_type:
+          type: string
+          title: Grant Type
+        assertion:
+          type: string
+          title: Assertion
+      type: object
+      required:
+      - grant_type
+      - assertion
+      title: Body_exchangeJwtAssertion
+    InfoResponse:
+      properties:
+        clientType:
+          type: string
+          enum:
+          - service
+          - user
+          - application
+          title: Clienttype
+        clientId:
+          type: string
+          title: Clientid
+        metadata:
+          type: object
+          title: Metadata
+      type: object
+      required:
+      - clientType
+      - clientId
+      title: InfoResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

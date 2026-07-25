@@ -1,0 +1,212 @@
+openapi: 3.1.0
+info:
+  title: Zest equity public api Authentication Subscription Forms API
+  version: 0.1.0
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+servers:
+- url: https://sandbox-api.zestequity.com
+  description: Staging
+tags:
+- name: Subscription Forms
+  description: Upload signed subscription forms (PDF or image) for partner-managed subscriptions. Files are streamed to private storage and referenced on the Bid.
+paths:
+  /v1/spvs/{spv_slug}/subscription/{person_id}/forms:
+    post:
+      tags:
+      - Subscription Forms
+      summary: Upload signed subscription form
+      description: 'Uploads a signed subscription form for a partner-managed subscription. Multipart/form-data with a single `file` field. Max 10 MB. Allowed content types: PDF, JPEG, PNG, WEBP. Emits `signed_subscription_form.uploaded` webhook on success.'
+      operationId: uploadSubscriptionForm
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Spv Slug
+        name: spv_slug
+        in: path
+      - required: true
+        schema:
+          type: string
+          title: Person Id
+        name: person_id
+        in: path
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_uploadSubscriptionForm'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormUploadResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '403':
+          description: Service not provisioned for partner API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '404':
+          description: SPV or person not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '409':
+          description: Bid is in a terminal status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '413':
+          description: File too large (>10 MB)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '415':
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    PartnerValidationError:
+      properties:
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
+      type: object
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
+    FormUploadResponse:
+      properties:
+        subscriptionSlug:
+          type: string
+          title: Subscriptionslug
+        spvSlug:
+          type: string
+          title: Spvslug
+        personId:
+          type: string
+          title: Personid
+        subscriptionFormUrl:
+          type: string
+          title: Subscriptionformurl
+        uploadedAt:
+          type: string
+          format: date-time
+          title: Uploadedat
+      type: object
+      required:
+      - subscriptionSlug
+      - spvSlug
+      - personId
+      - subscriptionFormUrl
+      - uploadedAt
+      title: FormUploadResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PartnerErrorResponse:
+      properties:
+        detail:
+          type: string
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
+      type: object
+      required:
+      - code
+      title: PartnerErrorResponse
+    Body_uploadSubscriptionForm:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_uploadSubscriptionForm
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

@@ -1,0 +1,246 @@
+openapi: 3.1.0
+info:
+  title: Zest equity public api Authentication Subscriptions API
+  version: 0.1.0
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+servers:
+- url: https://sandbox-api.zestequity.com
+  description: Staging
+tags:
+- name: Subscriptions
+  description: Create one or more subscriptions for a single SPV.
+paths:
+  /v1/spvs/{spv_slug}/subscriptions:
+    post:
+      tags:
+      - Subscriptions
+      summary: Create subscriptions for one SPV
+      description: 'Creates one or more subscription rows for a single SPV. Per investor: lump sum + share class. `Idempotency-Key` is optional.'
+      operationId: createSubscriptions
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Spv Slug
+        name: spv_slug
+        in: path
+      - required: false
+        schema:
+          type: string
+          title: Idempotency-Key
+        name: Idempotency-Key
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionBulkCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionBulkResponse'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '403':
+          description: Service not provisioned for partner API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '404':
+          description: SPV not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '409':
+          description: Idempotency-Key conflict (different body)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    PartnerValidationError:
+      properties:
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
+      type: object
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SubscriptionResult:
+      properties:
+        partnerSubscriptionId:
+          type: string
+          title: Partnersubscriptionid
+        subscriptionSlug:
+          type: string
+          title: Subscriptionslug
+        spvSlug:
+          type: string
+          title: Spvslug
+        personId:
+          type: string
+          title: Personid
+        status:
+          type: string
+          title: Status
+        lumpSum:
+          type: object
+          title: Lumpsum
+        shareClassSlug:
+          type: string
+          title: Shareclassslug
+      type: object
+      required:
+      - subscriptionSlug
+      - spvSlug
+      - personId
+      - status
+      - lumpSum
+      - shareClassSlug
+      title: SubscriptionResult
+    PartnerErrorResponse:
+      properties:
+        detail:
+          type: string
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
+      type: object
+      required:
+      - code
+      title: PartnerErrorResponse
+    SubscriptionBulkResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/SubscriptionResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: SubscriptionBulkResponse
+    SubscriptionCreateRow:
+      properties:
+        partnerSubscriptionId:
+          type: string
+          title: Partnersubscriptionid
+          description: Optional partner-side subscription id; echoed on the response for correlation.
+          example: acme-sub-9921
+        zestPersonId:
+          type: string
+          title: Zestpersonid
+          example: psn_abc123
+        lumpSum:
+          type: object
+          title: Lumpsum
+          description: '{currency, value} object — currency is ISO 4217, value is a decimal string.'
+          example:
+            currency: USD
+            value: '50000.00'
+        shareClassSlug:
+          type: string
+          title: Shareclassslug
+          example: sc_classA
+      type: object
+      required:
+      - zestPersonId
+      - lumpSum
+      - shareClassSlug
+      title: SubscriptionCreateRow
+    SubscriptionBulkCreate:
+      properties:
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/SubscriptionCreateRow'
+          type: array
+          title: Subscriptions
+      type: object
+      required:
+      - subscriptions
+      title: SubscriptionBulkCreate
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

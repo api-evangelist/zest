@@ -1,0 +1,482 @@
+openapi: 3.1.0
+info:
+  title: Zest equity public api Authentication SPV Requests API
+  version: 0.1.0
+  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+servers:
+- url: https://sandbox-api.zestequity.com
+  description: Staging
+tags:
+- name: SPV Requests
+  description: Submit SPV creation requests, inspect their lifecycle, and cancel pending ones. SPV requests are reviewed by Zest admins and produce SPV materialisation on approval.
+paths:
+  /v1/spv-requests:
+    get:
+      tags:
+      - SPV Requests
+      summary: List SPV requests
+      description: Returns a paginated list of SPV requests scoped to the caller's `client_id`.
+      operationId: listSpvRequests
+      parameters:
+      - required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          title: Perpage
+          default: 10
+        name: perPage
+        in: query
+      - required: false
+        schema:
+          type: integer
+          minimum: 1
+          title: Page
+          default: 1
+        name: page
+        in: query
+      - required: false
+        schema:
+          $ref: '#/components/schemas/SpvRequestStatus'
+        name: status
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregationResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - SPV Requests
+      summary: Create an SPV request
+      description: Submits an SPV creation request. Validation runs against the spaas-contract template indicated by `templateId`. On success, Zest fires `spv_request.created`. Admin review materialises the SPV; success fires `spv_request.completed`.
+      operationId: createSpvRequest
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Idempotency-Key
+        name: Idempotency-Key
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpvRequestCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpvRequestResponse'
+        '400':
+          description: Contract validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '403':
+          description: Service not provisioned for partner API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '404':
+          description: Template not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '409':
+          description: Idempotency-Key conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /v1/spv-requests/{slug}:
+    get:
+      tags:
+      - SPV Requests
+      summary: Get an SPV request
+      description: Returns a single SPV request scoped to the caller's `client_id`.
+      operationId: getSpvRequest
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Slug
+        name: slug
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpvRequestResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '404':
+          description: SPV request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+    delete:
+      tags:
+      - SPV Requests
+      summary: Cancel an SPV request
+      description: Cancels a pending-review SPV request. Returns 409 if the request is in a terminal state (approved, rejected, or already cancelled).
+      operationId: cancelSpvRequest
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Slug
+        name: slug
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpvRequestResponse'
+        '401':
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '404':
+          description: SPV request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '409':
+          description: SPV request is in a terminal state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    SpvRequestCreate:
+      properties:
+        templateId:
+          type: string
+          title: Templateid
+          description: Contract template id provided during onboarding.
+          example: <your_template_id>
+        templateVersion:
+          type: string
+          title: Templateversion
+          description: Contract template version (e.g. '1.0.0').
+          example: 1.0.0
+        attributes:
+          type: object
+          title: Attributes
+          description: Flat attribute map validated against the template.
+          example:
+            deal_name: Acme Holdings Series A Syndicate
+            deal_slug: acme-series-a-2026
+            company_id: <your_company_id>
+            deal_type: <your_deal_type>
+            security_type: Equity
+            currency: USD
+            price_per_share:
+              currency: USD
+              value: '36.97'
+            is_fixed_price: true
+            minimum_ticket_size:
+              currency: USD
+              value: '1000'
+            start_date: '2026-06-01T00:00:00Z'
+            status_tag: Live
+            deal_stage: executing
+            investment_summary: Subscription into Acme Holdings Series A shares.
+            deal_documents_title: Acme Series A Deck
+            deal_documents_url: https://example.com/acme-deck.pdf
+            deal_documents_media_type: pdf
+            share_class_name: Class A
+            share_class_slug: acme-class-a
+            link_enabled: true
+            private_code: ACME01
+      type: object
+      required:
+      - templateId
+      - templateVersion
+      - attributes
+      title: SpvRequestCreate
+    PartnerValidationError:
+      properties:
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
+      type: object
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    FeesAndCarryResponse:
+      properties:
+        shareClasses:
+          items:
+            $ref: '#/components/schemas/ShareClassFeesAndCarry'
+          type: array
+          title: Shareclasses
+      type: object
+      title: FeesAndCarryResponse
+    SpvRequestStatus:
+      type: string
+      enum:
+      - pending-review
+      - approved
+      - rejected
+      - cancelled
+      title: SpvRequestStatus
+      description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AggregationResponse:
+      properties:
+        documents:
+          items: {}
+          type: array
+          title: Documents
+        count:
+          type: integer
+          title: Count
+          default: 0
+        skip:
+          type: integer
+          title: Skip
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 10
+      type: object
+      required:
+      - documents
+      title: AggregationResponse
+    MaterialisedRefsResponse:
+      properties:
+        opportunitySlug:
+          type: string
+          title: Opportunityslug
+        vehicleSlug:
+          type: string
+          title: Vehicleslug
+        spSlug:
+          type: string
+          title: Spslug
+        spcSlug:
+          type: string
+          title: Spcslug
+      type: object
+      required:
+      - opportunitySlug
+      - vehicleSlug
+      - spSlug
+      - spcSlug
+      title: MaterialisedRefsResponse
+    ShareClassFeesAndCarry:
+      properties:
+        name:
+          type: string
+          title: Name
+        slug:
+          type: string
+          title: Slug
+        managementFeePercent:
+          type: string
+          title: Managementfeepercent
+        carryPercent:
+          type: string
+          title: Carrypercent
+        setupFee:
+          type: object
+          title: Setupfee
+      type: object
+      required:
+      - name
+      - slug
+      title: ShareClassFeesAndCarry
+    SpvRequestResponse:
+      properties:
+        spvRequestSlug:
+          type: string
+          title: Spvrequestslug
+        status:
+          $ref: '#/components/schemas/SpvRequestStatus'
+        templateId:
+          type: string
+          title: Templateid
+        templateVersion:
+          type: string
+          title: Templateversion
+        tenantSlug:
+          type: string
+          title: Tenantslug
+        clientId:
+          type: string
+          title: Clientid
+        attributes:
+          type: object
+          title: Attributes
+        rejectionReason:
+          type: string
+          title: Rejectionreason
+        cancelledAt:
+          type: string
+          format: date-time
+          title: Cancelledat
+        approvedAt:
+          type: string
+          format: date-time
+          title: Approvedat
+        materialisedRefs:
+          $ref: '#/components/schemas/MaterialisedRefsResponse'
+        feesAndCarry:
+          $ref: '#/components/schemas/FeesAndCarryResponse'
+        createdAt:
+          type: string
+          format: date-time
+          title: Createdat
+        updatedAt:
+          type: string
+          format: date-time
+          title: Updatedat
+      type: object
+      required:
+      - spvRequestSlug
+      - status
+      - templateId
+      - templateVersion
+      - tenantSlug
+      - clientId
+      - attributes
+      - createdAt
+      - updatedAt
+      title: SpvRequestResponse
+    PartnerErrorResponse:
+      properties:
+        detail:
+          type: string
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
+      type: object
+      required:
+      - code
+      title: PartnerErrorResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
