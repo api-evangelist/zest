@@ -1,0 +1,35 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/zest-openapi-original.json
+also_from: https://docs.zestequity.com
+standards:
+- id: oauth2
+  conforms: true
+  evidence: OAuth 2.0 JWT-Bearer assertion grant (RFC 7523) at POST /v1/oauth2/tokens.
+- id: rfc7523-jwt-bearer
+  conforms: true
+  evidence: grant_type urn:ietf:params:oauth:grant-type:jwt-bearer with signed JWT assertion.
+- id: http-bearer-auth
+  conforms: true
+  evidence: HTTPBearer securityScheme (type http, scheme bearer).
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Uses a custom error envelope (code/detail/errorId/validationErrors), not application/problem+json.
+- id: idempotency-key
+  conforms: true
+  evidence: Idempotency-Key header on write endpoints with 24h replay window and body hashing.
+- id: webhook-hmac-signing
+  conforms: true
+  evidence: HMAC-SHA256 Zest-Signature header (Stripe-style) with 300s replay window.
+- id: pagination
+  conforms: true
+  evidence: page/perPage query params on GET /v1/spv-requests.
+- id: openapi-3.1
+  conforms: true
+  evidence: OpenAPI 3.1.0 specification published at docs.zestequity.com/api-reference/openapi.json.
+- id: ocf-open-captable-format
+  conforms: partial
+  evidence: Org maintains pyocf (Open Captable Foundation schema bindings); not directly asserted in the public API contract.
+regulatory:
+- FSRA (Financial Services Regulatory Authority, ADGM) — Zest Escrow and Zest Arrange are FSRA-regulated services.
+- DIFC-regulated SPV-as-a-Service platform.

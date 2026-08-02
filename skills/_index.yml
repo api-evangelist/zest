@@ -1,0 +1,16 @@
+generated: '2026-07-21'
+method: generated
+source: openapi/zest-openapi-original.json
+skills:
+- file: zest-create-spv-request.md
+  name: Create a Zest SPV request
+  api: openapi/zest-openapi-original.json
+  operations: [exchangeJwtAssertion, list_contract_versions_v1_contracts_get, list_templates_v1_contracts_templates__version__get, createSpvRequest, getSpvRequest]
+- file: zest-onboard-investors-and-subscribe.md
+  name: Onboard investors and record a Zest subscription
+  api: openapi/zest-openapi-original.json
+  operations: [bulkCreateInvestors, createSubscriptions, uploadSubscriptionForm, uploadFundingReceipt]
+- file: zest-verify-webhooks.md
+  name: Verify and handle Zest webhooks
+  api: openapi/zest-openapi-original.json
+  operations: [getSpvRequest]

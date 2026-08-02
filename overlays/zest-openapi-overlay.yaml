@@ -1,0 +1,29 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Zest Public API
+  version: 1.0.0
+extends: openapi/zest-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-rating: 4
+    x-api-evangelist: https://apievangelist.com
+    x-production-server: https://public-api.zestequity.com
+    x-docs: https://docs.zestequity.com
+    x-webhooks: https://docs.zestequity.com/webhooks/overview
+    x-idempotency: https://docs.zestequity.com/idempotency
+    x-errors: https://docs.zestequity.com/errors
+- target: $.servers
+  update:
+  - url: https://public-api.zestequity.com
+    description: Production (base URL shared during partner onboarding)
+  - url: https://sandbox-api.zestequity.com
+    description: Sandbox / Staging
+- target: $.info
+  update:
+    description: >-
+      Zest Public API — programmatic partner access to Zest Equity's
+      DIFC-regulated SPV-as-a-Service platform: SPV creation requests, bulk
+      investor onboarding, subscription processing (forms + funding receipts),
+      and nine HMAC-signed webhook lifecycle events. Auth is an OAuth 2.0
+      JWT-Bearer assertion grant; write endpoints support Idempotency-Key.

@@ -1,0 +1,24 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zestequity.com/changelog
+scheme: semver
+current_version: v1.0.1
+entries:
+- version: v1.0.1
+  title: post-launch corrections
+  breaking: false
+  highlights:
+  - subscription.completed is now eventually-consistent; a reconciler actor sweeps every 60s and fires the webhook for any partner-sourced Bid where the synchronous emit was skipped.
+  - subscription.completed admin trigger wired through the Zest admin UI (reconciler as backstop).
+  - Optional partnerInvestorId added to signed_subscription_form.uploaded and funding_receipt.uploaded payloads.
+  - Partner registration CLI accepts --public-key-b64 for direct key registration and reports duplicate-key collisions gracefully.
+  - Spaas contract sync + materialiser expanded to cover remaining Opportunity required fields (is_fixed_price, company_id).
+- version: v1.0.0
+  title: Initial release
+  breaking: false
+  highlights:
+  - Authentication - OAuth 2.0 JWT-Bearer assertion grant via POST /v1/oauth2/tokens.
+  - SPV Requests - POST, GET, LIST, DELETE for /v1/spv-requests with admin approve/reject/cancel flow.
+  - Investors - bulk-create POST /v1/investors with partial-success semantics.
+  - Subscriptions - bulk-create, signed-form upload, and funding-receipt upload.
+  - Webhooks - nine lifecycle event types delivered with HMAC-SHA256 signed envelopes.

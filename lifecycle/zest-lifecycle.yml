@@ -1,0 +1,22 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zestequity.com/introduction
+versioning:
+  scheme: uri-path
+  current: v1
+  policy: >-
+    All resource paths are prefixed with /v1. Zest never changes the wire shape
+    of a v1 endpoint; only additive, backwards-compatible changes are made.
+  docs: https://docs.zestequity.com/changelog
+deprecation:
+  policy: >-
+    No formal Sunset/Deprecation-header (RFC 8594) policy published. The
+    stability contract is the additive-only v1 promise above.
+  sunset_header: false
+sla:
+  published: false
+status_page: null
+changelog:
+  url: https://docs.zestequity.com/changelog
+  ref: changelog/zest-changelog.yml
+deprecated_operations: []

@@ -1,0 +1,55 @@
+# Zest Public API
+
+> Partner-facing API + webhook documentation for the Zest Equity SPaaS platform.
+
+## Docs
+
+- [Exchange a JWT assertion for an access token](https://docs.zestequity.com/api-reference/authentication/exchange-a-jwt-assertion-for-an-access-token.md): OAuth 2.0 JWT-Bearer assertion grant. Submit `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer` plus a signed JWT `assertion`. Returns a short-lived bearer access token used for subsequent partner API calls.
+- [Inspect the current access token](https://docs.zestequity.com/api-reference/authentication/inspect-the-current-access-token.md): Returns metadata about the bearer token currently presented in the Authorization header. Useful for verifying that a token corresponds to the expected partner application.
+- [List attribute catalogs for a version](https://docs.zestequity.com/api-reference/contracts/list-attribute-catalogs-for-a-version.md)
+- [List available contract versions](https://docs.zestequity.com/api-reference/contracts/list-available-contract-versions.md)
+- [List primitive/type specifications for a version](https://docs.zestequity.com/api-reference/contracts/list-primitivetype-specifications-for-a-version.md)
+- [List sample payloads for a version](https://docs.zestequity.com/api-reference/contracts/list-sample-payloads-for-a-version.md)
+- [List template definitions for a version](https://docs.zestequity.com/api-reference/contracts/list-template-definitions-for-a-version.md)
+- [Retrieve a primitive/type definition](https://docs.zestequity.com/api-reference/contracts/retrieve-a-primitivetype-definition.md)
+- [Retrieve a sample payload](https://docs.zestequity.com/api-reference/contracts/retrieve-a-sample-payload.md)
+- [Retrieve a specific attribute catalog](https://docs.zestequity.com/api-reference/contracts/retrieve-a-specific-attribute-catalog.md)
+- [Retrieve a specific template](https://docs.zestequity.com/api-reference/contracts/retrieve-a-specific-template.md)
+- [Bulk create investors](https://docs.zestequity.com/api-reference/investors/bulk-create-investors.md): Creates one or more investor records. Always returns 200 with a per-row { status, zestPersonId | error } result keyed by `partnerInvestorId`. Idempotent across replays: a repeated `partnerInvestorId` returns the existing Zest person id. `Idempotency-Key` is optional and provides response-level cachi…
+- [Cancel an SPV request](https://docs.zestequity.com/api-reference/spv-requests/cancel-an-spv-request.md): Cancels a pending-review SPV request. Returns 409 if the request is in a terminal state (approved, rejected, or already cancelled).
+- [Create an SPV request](https://docs.zestequity.com/api-reference/spv-requests/create-an-spv-request.md): Submits an SPV creation request. Validation runs against the spaas-contract template indicated by `templateId`. On success, Zest fires `spv_request.created`. Admin review materialises the SPV; success fires `spv_request.completed`.
+- [Get an SPV request](https://docs.zestequity.com/api-reference/spv-requests/get-an-spv-request.md): Returns a single SPV request scoped to the caller's `client_id`.
+- [List SPV requests](https://docs.zestequity.com/api-reference/spv-requests/list-spv-requests.md): Returns a paginated list of SPV requests scoped to the caller's `client_id`.
+- [Upload signed subscription form](https://docs.zestequity.com/api-reference/subscription-forms/upload-signed-subscription-form.md): Uploads a signed subscription form for a partner-managed subscription. Multipart/form-data with a single `file` field. Max 10 MB. Allowed content types: PDF, JPEG, PNG, WEBP. Emits `signed_subscription_form.uploaded` webhook on success.
+- [Upload funding receipt](https://docs.zestequity.com/api-reference/subscription-fundings/upload-funding-receipt.md): Uploads a wire-transfer receipt + funding metadata (amount / currency / wire_reference) for a partner-managed subscription. Q6c strict order: the signed subscription form must already be on record, otherwise this endpoint returns 409. Emits `funding_receipt.uploaded` webhook on success.
+- [Create subscriptions for one SPV](https://docs.zestequity.com/api-reference/subscriptions/create-subscriptions-for-one-spv.md): Creates one or more subscription rows for a single SPV. Per investor: lump sum + share class. `Idempotency-Key` is optional.
+- [API Endpoints Documentation](https://docs.zestequity.com/api-reference/system/api-endpoints-documentation.md)
+- [OpenAPI Endpoint Specifications](https://docs.zestequity.com/api-reference/system/openapi-endpoint-specifications.md)
+- [Outside world health check endpoint](https://docs.zestequity.com/api-reference/system/outside-world-health-check-endpoint.md)
+- [Root endpoint](https://docs.zestequity.com/api-reference/system/root-endpoint.md)
+- [Authentication](https://docs.zestequity.com/authentication.md): OAuth 2.0 JWT-Bearer assertion flow used by every partner API call.
+- [Changelog](https://docs.zestequity.com/changelog.md): API and webhook change history.
+- [Data flow](https://docs.zestequity.com/concepts/data-flow.md): End-to-end partner sequence — from SPV request to subscription completion.
+- [Investors](https://docs.zestequity.com/concepts/investors.md): Bulk import semantics, partial success, partnerInvestorId correlation, and replay-safe retries.
+- [SPV Requests](https://docs.zestequity.com/concepts/spv-requests.md): What an SPV request is, what state machine it follows, and how partner code reacts to each transition.
+- [Subscriptions](https://docs.zestequity.com/concepts/subscriptions.md): What a Zest subscription is and the strict order that forms-then-fundings must follow.
+- [Errors](https://docs.zestequity.com/errors.md): Uniform error envelope, top-level error code vocabulary, and per-row validation codes.
+- [Idempotency](https://docs.zestequity.com/idempotency.md): How Idempotency-Key headers, body hashing, and the 24h replay window work on Zest's write endpoints.
+- [Introduction](https://docs.zestequity.com/introduction.md): Zest Public API — programmatic access to SPV creation, investor onboarding, and subscription processing for Zest Equity's regulated private-market platform.
+- [Quickstart](https://docs.zestequity.com/quickstart.md): Get from zero to first SPV request in under 10 minutes.
+- [funding_receipt.uploaded](https://docs.zestequity.com/webhooks/events/funding-receipt-uploaded.md): Fired after POST /v1/spvs/{slug}/subscription/{personId}/fundings succeeds.
+- [investor.created](https://docs.zestequity.com/webhooks/events/investor-created.md): Fired once per row created by POST /v1/investors.
+- [signed_subscription_form.uploaded](https://docs.zestequity.com/webhooks/events/signed-form-uploaded.md): Fired after POST /v1/spvs/{slug}/subscription/{personId}/forms succeeds.
+- [spv_request.cancelled](https://docs.zestequity.com/webhooks/events/spv-request-cancelled.md): Fired after a partner cancels a pending-review SPV request.
+- [spv_request.completed](https://docs.zestequity.com/webhooks/events/spv-request-completed.md): Fired after a Zest admin approves an SPV request and the SPV is materialised.
+- [spv_request.created](https://docs.zestequity.com/webhooks/events/spv-request-created.md): Fired after POST /v1/spv-requests returns 201.
+- [spv_request.rejected](https://docs.zestequity.com/webhooks/events/spv-request-rejected.md): Fired after a Zest admin rejects an SPV request.
+- [subscription.completed](https://docs.zestequity.com/webhooks/events/subscription-completed.md): Fired when a Zest admin transitions a partner-sourced bid to Completed.
+- [subscription.created](https://docs.zestequity.com/webhooks/events/subscription-created.md): Fired once per row created by POST /v1/spvs/{slug}/subscriptions.
+- [Overview](https://docs.zestequity.com/webhooks/overview.md): Universal webhook envelope, event types, ordering, and dedup expectations.
+- [Retries & dead-letter](https://docs.zestequity.com/webhooks/retries.md): Schedule, dead-letter behaviour, and idempotency expectations for inbound webhooks.
+- [Verification](https://docs.zestequity.com/webhooks/verification.md): HMAC-SHA256 signature verification for inbound Zest webhooks.
+
+## OpenAPI Specs
+
+- [openapi](https://docs.zestequity.com/api-reference/openapi.json)

@@ -1,0 +1,28 @@
+{
+  "provider": "zest",
+  "sources": [
+    "zest-authentication-api-openapi.yml",
+    "zest-contracts-api-openapi.yml",
+    "zest-investors-api-openapi.yml",
+    "zest-spv-requests-api-openapi.yml",
+    "zest-subscription-forms-api-openapi.yml",
+    "zest-subscription-fundings-api-openapi.yml",
+    "zest-subscriptions-api-openapi.yml",
+    "zest-system-api-openapi.yml"
+  ],
+  "outputs": [
+    "zest-authentication-api-openapi.yml",
+    "zest-contracts-api-openapi.yml",
+    "zest-investors-api-openapi.yml",
+    "zest-spv-requests-api-openapi.yml",
+    "zest-subscription-forms-api-openapi.yml",
+    "zest-subscription-fundings-api-openapi.yml",
+    "zest-subscriptions-api-openapi.yml",
+    "zest-system-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

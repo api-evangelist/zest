@@ -1,0 +1,64 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zestequity.com/introduction
+sources:
+- https://docs.zestequity.com/idempotency
+- https://docs.zestequity.com/errors
+- openapi/zest-openapi-original.json
+wire_format:
+  encoding: JSON
+  field_casing: camelCase
+authentication:
+  style: OAuth 2.0 JWT-Bearer assertion grant; bearer access token in Authorization header
+  ref: authentication/zest-authentication.yml
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  required_on:
+  - POST /v1/spv-requests
+  optional_on:
+  - POST /v1/investors
+  - POST /v1/spvs/{slug}/subscriptions
+  not_used_on:
+  - POST /v1/spvs/{slug}/subscription/{personId}/forms (uploads are content-addressed)
+  - POST /v1/spvs/{slug}/subscription/{personId}/fundings (uploads are content-addressed)
+  semantics: >-
+    Zest hashes the canonicalised request body (sorted JSON keys, UTF-8). First
+    call with a key executes and caches the response for 24h keyed by
+    (client_id, key). Replay with same key + same body hash returns the cached
+    response verbatim with no side effects. Same key + different body hash
+    within 24h returns 409 conflict.
+  replay_window: 24h
+  natural_key: POST /v1/investors is additionally idempotent on partnerInvestorId
+  docs: https://docs.zestequity.com/idempotency
+pagination:
+  style: page-number
+  params:
+  - page
+  - perPage
+  applies_to:
+  - GET /v1/spv-requests
+error_envelope:
+  format: custom-envelope (not RFC 9457)
+  fields: [code, detail, errorId, validationErrors]
+  ref: errors/zest-problem-types.yml
+request_tracing:
+  correlation_field: errorId
+  note: Server-generated UUID on every non-2xx response for support correlation.
+versioning:
+  scheme: uri-path
+  current: v1
+  policy: >-
+    All resource paths are prefixed with /v1. The wire shape of a v1 endpoint is
+    never changed; only additive, backwards-compatible changes are made.
+  ref: lifecycle/zest-lifecycle.yml
+webhooks:
+  envelope_fields: [eventId, eventType, occurredAt, data]
+  signature: HMAC-SHA256 over "<t>.<raw_body>" in Zest-Signature header
+  delivery: at-least-once
+  dedup_key: eventId
+  ref: asyncapi/zest-webhooks.yml
+uploads:
+  max_size: 10 MB
+  allowed_content_types: [PDF, JPEG, PNG, WEBP]
+  addressing: content-addressed

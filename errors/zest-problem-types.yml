@@ -1,0 +1,85 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zestequity.com/errors
+also_derived_from: openapi/zest-openapi-original.json
+format: custom-envelope
+notes: >-
+  Zest does NOT use RFC 9457 application/problem+json. Every non-2xx response
+  uses a uniform custom envelope with a top-level machine-readable `code`, a
+  human `detail`, a UUID `errorId` for support correlation, and an optional
+  `validationErrors[]` array present only when code = validation_error.
+envelope:
+  fields:
+  - name: code
+    type: string
+    description: Top-level error code from the PartnerErrorCode vocabulary.
+  - name: detail
+    type: string
+    description: Human-readable explanation; safe for operator UIs, sanitise before end-users.
+  - name: errorId
+    type: string (UUID)
+    description: Stable per-error UUID. Cite when contacting support.
+  - name: validationErrors
+    type: array
+    description: Present on validation_error to surface per-field errors.
+problems:
+- code: validation_error
+  status: 400
+  title: Contract validation failed
+  remediation: Inspect validationErrors[] for per-field codes.
+- code: invalid_request
+  status: 400
+  title: Request was syntactically invalid
+  remediation: Missing required header, malformed JSON, etc.
+- code: invalid_token
+  status: 401
+  title: Bearer token missing, malformed, or expired
+  remediation: Mint a fresh access token via the JWT-bearer grant.
+- code: forbidden
+  status: 403
+  title: Partner application not provisioned for this resource
+- code: not_found
+  status: 404
+  title: Resource does not exist or is not visible to the caller
+- code: conflict
+  status: 409
+  title: Idempotency-Key conflict, terminal-state mutation, or strict-order violation
+- code: payload_too_large
+  status: 413
+  title: File exceeded the 10 MB upload cap
+- code: unsupported_media_type
+  status: 415
+  title: Upload content-type not in the allow list (PDF, JPEG, PNG, WEBP)
+- code: internal_error
+  status: 500
+  title: Server-side failure
+  remediation: Retry with backoff; cite errorId if persistent.
+- code: service_unavailable
+  status: 503
+  title: Transient downstream outage
+  remediation: Retry with exponential backoff.
+validation_error_codes:
+- code: required
+  meaning: Required field missing.
+- code: unknown_attribute
+  meaning: Attribute not declared by the contract template.
+- code: type
+  meaning: Value is the wrong type.
+- code: enum
+  meaning: Value is not in the allowed enum set.
+- code: pattern
+  meaning: Value did not match the regex constraint.
+- code: max_length
+  meaning: String exceeded the maximum length.
+- code: min_value
+  meaning: Number below the minimum.
+- code: max_value
+  meaning: Number above the maximum.
+- code: format
+  meaning: Format constraint failed (e.g. ISO date, ISO 4217 currency).
+- code: currency_mismatch
+  meaning: Multi-currency mismatch within a single object.
+- code: server_supplied
+  meaning: Field is server-managed and cannot be supplied by partner.
+- code: institutional_not_supported
+  meaning: Institutional investor type not supported on this template.

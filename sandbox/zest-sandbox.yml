@@ -1,0 +1,28 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zestequity.com/quickstart
+environments:
+- name: sandbox
+  base_url: https://sandbox-api.zestequity.com
+  description: Staging environment declared in the OpenAPI servers[].
+- name: production
+  base_url: https://public-api.zestequity.com
+  description: Live environment; base URL communicated during partner onboarding.
+provisioning: >-
+  A sandbox client_id, the matching EdDSA private key, and a registered webhook
+  URL + signing secret are provisioned by Zest during partner onboarding. Email
+  sara@zestholdco.com to provision.
+credentials:
+  auth: Partner-signed EdDSA JWT exchanged at POST /v1/oauth2/tokens for a bearer token.
+  webhook_secret_format: whsec_<hex>
+test_values:
+  published: false
+  note: >-
+    Zest does not publish static magic test cards/identifiers; sandbox exercises
+    the real SPV-request -> investor -> subscription flow against provisioned
+    partner credentials. Admin approval materialises sandbox SPVs.
+reference_implementation:
+  note: >-
+    The quickstart references an open-source reference implementation runnable
+    locally at http://localhost:8080 for development; production/sandbox base
+    URLs are shared at onboarding.

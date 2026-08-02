@@ -1,0 +1,44 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/zest-openapi-original.json
+also_from: https://docs.zestequity.com
+entities:
+- name: SpvRequest
+  identifier: spvRequestSlug
+  status_enum: [pending-review, approved, rejected, cancelled]
+  key_fields: [templateId, templateVersion, tenantSlug, clientId, attributes, materialisedRefs, feesAndCarry]
+  description: A partner-submitted request to create an SPV, validated against a contract template. On admin approval it materialises an SPV (Opportunity, Vehicle, SP, SPC).
+- name: SPV
+  identifier: spv_slug
+  description: The materialised vehicle referenced by materialisedRefs after an SpvRequest is approved.
+- name: Investor
+  identifier: zestPersonId
+  partner_key: partnerInvestorId
+  key_fields: [email, firstName, lastName, dateOfBirth, countryOfResidence]
+  description: A partner-managed investor person record; bulk-created with partial-success semantics.
+- name: Subscription
+  identifier: partnerSubscriptionId
+  key_fields: [zestPersonId, lumpSum, shareClassSlug]
+  description: An investor subscription (bid) to an SPV share class.
+- name: SubscriptionForm
+  description: Signed subscription form uploaded per subscription (content-addressed).
+- name: FundingReceipt
+  key_fields: [amount, currency, wire_reference]
+  description: Wire-transfer receipt uploaded per subscription; strict order requires the signed form first.
+- name: ContractTemplate
+  identifier: templateId
+  key_fields: [templateVersion]
+  description: Versioned spaas-contract template (templates, catalogs, primitives, samples) that SpvRequest attributes validate against.
+relationships:
+- {from: SpvRequest, to: ContractTemplate, type: belongs_to, via: templateId}
+- {from: SpvRequest, to: SPV, type: has_one, via: materialisedRefs}
+- {from: Subscription, to: SPV, type: belongs_to, via: spv_slug}
+- {from: Subscription, to: Investor, type: belongs_to, via: zestPersonId}
+- {from: SubscriptionForm, to: Subscription, type: belongs_to, via: person_id}
+- {from: FundingReceipt, to: Subscription, type: belongs_to, via: person_id}
+- {from: SubscriptionForm, to: FundingReceipt, type: precedes, via: strict-order}
+id_conventions:
+  spvRequestSlug: slug
+  zestPersonId: server-assigned Zest person id
+  partnerInvestorId: partner-supplied idempotency key for investors
+  partnerSubscriptionId: partner-supplied subscription key

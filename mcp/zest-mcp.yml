@@ -1,0 +1,31 @@
+generated: '2026-07-21'
+method: derived
+status: candidate
+source: openapi/zest-openapi-original.json
+note: >-
+  No official hosted/remote MCP server was found for Zest. This is a candidate
+  tool list derived one-to-one from the OpenAPI operations, for a future MCP
+  wrapper over the Zest Public API.
+server:
+  name: zest
+  transport: http
+tools:
+- {name: exchange_jwt_assertion, description: Exchange a partner-signed JWT for a bearer access token, source_operation: 'openapi/zest-openapi-original.json#exchangeJwtAssertion'}
+- {name: get_oauth2_info, description: Inspect the current access token, source_operation: 'openapi/zest-openapi-original.json#getOauth2Info'}
+- {name: list_contract_versions, description: List available contract versions, source_operation: 'openapi/zest-openapi-original.json#list_contract_versions_v1_contracts_get'}
+- {name: list_templates, description: List template definitions for a version, source_operation: 'openapi/zest-openapi-original.json#list_templates_v1_contracts_templates__version__get'}
+- {name: get_template, description: Retrieve a specific template, source_operation: 'openapi/zest-openapi-original.json#get_template_v1_contracts_templates__version___template_name__get'}
+- {name: list_catalogs, description: List attribute catalogs for a version, source_operation: 'openapi/zest-openapi-original.json#list_catalogs_v1_contracts_catalogs__version__get'}
+- {name: get_catalog, description: Retrieve a specific attribute catalog, source_operation: 'openapi/zest-openapi-original.json#get_catalog_v1_contracts_catalogs__version___catalog_name__get'}
+- {name: list_primitives, description: List primitive/type specifications for a version, source_operation: 'openapi/zest-openapi-original.json#list_primitives_v1_contracts_primitives__version__get'}
+- {name: get_primitive, description: Retrieve a primitive/type definition, source_operation: 'openapi/zest-openapi-original.json#get_primitive_v1_contracts_primitives__version___primitive_name__get'}
+- {name: list_samples, description: List sample payloads for a version, source_operation: 'openapi/zest-openapi-original.json#list_samples_v1_contracts_samples__version__get'}
+- {name: get_sample, description: Retrieve a sample payload, source_operation: 'openapi/zest-openapi-original.json#get_sample_v1_contracts_samples__version___sample_name__get'}
+- {name: list_spv_requests, description: List SPV requests, source_operation: 'openapi/zest-openapi-original.json#listSpvRequests'}
+- {name: create_spv_request, description: Create an SPV request, source_operation: 'openapi/zest-openapi-original.json#createSpvRequest'}
+- {name: get_spv_request, description: Get an SPV request, source_operation: 'openapi/zest-openapi-original.json#getSpvRequest'}
+- {name: cancel_spv_request, description: Cancel an SPV request, source_operation: 'openapi/zest-openapi-original.json#cancelSpvRequest'}
+- {name: bulk_create_investors, description: Bulk create investors, source_operation: 'openapi/zest-openapi-original.json#bulkCreateInvestors'}
+- {name: create_subscriptions, description: Create subscriptions for an SPV, source_operation: 'openapi/zest-openapi-original.json#createSubscriptions'}
+- {name: upload_subscription_form, description: Upload signed subscription form, source_operation: 'openapi/zest-openapi-original.json#uploadSubscriptionForm'}
+- {name: upload_funding_receipt, description: Upload funding receipt, source_operation: 'openapi/zest-openapi-original.json#uploadFundingReceipt'}

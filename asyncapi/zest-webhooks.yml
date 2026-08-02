@@ -1,0 +1,39 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.zestequity.com/webhooks/overview
+spec_type: Webhooks
+transport: HTTPS POST to a single partner-registered endpoint
+envelope:
+  fields:
+  - {name: eventId, type: string, description: Globally unique delivery id; use for dedup.}
+  - {name: eventType, type: string, description: One of the nine event types.}
+  - {name: occurredAt, type: string (ISO 8601 UTC), description: Server emit time; use for ordering, not receipt order.}
+  - {name: data, type: object, description: Event-specific payload.}
+security:
+  scheme: HMAC-SHA256
+  header: Zest-Signature
+  format: "t=<unix_ts>,v1=<hex hmac_sha256(secret, '<t>.<raw_body>')>"
+  replay_window_seconds: 300
+  secret_format: whsec_<hex>
+  docs: https://docs.zestequity.com/webhooks/verification
+delivery:
+  semantics: at-least-once
+  timeout_seconds: 10
+  retry_schedule:
+  - {attempt: 2, delay: 30s}
+  - {attempt: 3, delay: 5m}
+  - {attempt: 4, delay: 30m}
+  - {attempt: 5, delay: 2h}
+  - {attempt: 6, delay: 12h}
+  dead_letter: Retained indefinitely for later replay after attempt 6 fails.
+  docs: https://docs.zestequity.com/webhooks/retries
+events:
+- {type: spv_request.created, trigger: A partner POSTed a new SPV request.}
+- {type: spv_request.completed, trigger: Zest admin approved an SPV request and the SPV materialised.}
+- {type: spv_request.rejected, trigger: Zest admin rejected an SPV request.}
+- {type: spv_request.cancelled, trigger: A partner cancelled a pending-review SPV request.}
+- {type: investor.created, trigger: A partner created a new investor record (one per row).}
+- {type: subscription.created, trigger: A subscription row was created.}
+- {type: subscription.completed, trigger: Zest admin transitioned a partner-sourced bid to Completed.}
+- {type: signed_subscription_form.uploaded, trigger: A signed subscription form was uploaded.}
+- {type: funding_receipt.uploaded, trigger: A wire-transfer funding receipt was uploaded.}

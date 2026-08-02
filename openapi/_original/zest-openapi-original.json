@@ -1,0 +1,2163 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Zest equity public api API",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://sandbox-api.zestequity.com",
+      "description": "Staging"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Root endpoint",
+        "operationId": "root",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/hc": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Outside world health check endpoint",
+        "operationId": "health_check",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "OpenAPI Endpoint Specifications",
+        "operationId": "openapi",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/docs": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "API Endpoints Documentation",
+        "operationId": "swagger",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/oauth2/tokens": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Exchange a JWT assertion for an access token",
+        "description": "OAuth 2.0 JWT-Bearer assertion grant. Submit `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer` plus a signed JWT `assertion`. Returns a short-lived bearer access token used for subsequent partner API calls.",
+        "operationId": "exchangeJwtAssertion",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_exchangeJwtAssertion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/oauth2/info": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Inspect the current access token",
+        "description": "Returns metadata about the bearer token currently presented in the Authorization header. Useful for verifying that a token corresponds to the expected partner application.",
+        "operationId": "getOauth2Info",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/contracts": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "List available contract versions",
+        "operationId": "list_contract_versions_v1_contracts_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/templates/{version}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "List template definitions for a version",
+        "operationId": "list_templates_v1_contracts_templates__version__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/templates/{version}/{template_name}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "Retrieve a specific template",
+        "operationId": "get_template_v1_contracts_templates__version___template_name__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Template Name"
+            },
+            "name": "template_name",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/catalogs/{version}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "List attribute catalogs for a version",
+        "operationId": "list_catalogs_v1_contracts_catalogs__version__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/catalogs/{version}/{catalog_name}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "Retrieve a specific attribute catalog",
+        "operationId": "get_catalog_v1_contracts_catalogs__version___catalog_name__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Catalog Name"
+            },
+            "name": "catalog_name",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/primitives/{version}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "List primitive/type specifications for a version",
+        "operationId": "list_primitives_v1_contracts_primitives__version__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/primitives/{version}/{primitive_name}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "Retrieve a primitive/type definition",
+        "operationId": "get_primitive_v1_contracts_primitives__version___primitive_name__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Primitive Name"
+            },
+            "name": "primitive_name",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/samples/{version}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "List sample payloads for a version",
+        "operationId": "list_samples_v1_contracts_samples__version__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contracts/samples/{version}/{sample_name}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "Retrieve a sample payload",
+        "operationId": "get_sample_v1_contracts_samples__version___sample_name__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Version"
+            },
+            "name": "version",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sample Name"
+            },
+            "name": "sample_name",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/spv-requests": {
+      "get": {
+        "tags": [
+          "SPV Requests"
+        ],
+        "summary": "List SPV requests",
+        "description": "Returns a paginated list of SPV requests scoped to the caller's `client_id`.",
+        "operationId": "listSpvRequests",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Perpage",
+              "default": 10
+            },
+            "name": "perPage",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Page",
+              "default": 1
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SpvRequestStatus"
+            },
+            "name": "status",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AggregationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "SPV Requests"
+        ],
+        "summary": "Create an SPV request",
+        "description": "Submits an SPV creation request. Validation runs against the spaas-contract template indicated by `templateId`. On success, Zest fires `spv_request.created`. Admin review materialises the SPV; success fires `spv_request.completed`.",
+        "operationId": "createSpvRequest",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            },
+            "name": "Idempotency-Key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpvRequestCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpvRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contract validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Service not provisioned for partner API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency-Key conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/spv-requests/{slug}": {
+      "get": {
+        "tags": [
+          "SPV Requests"
+        ],
+        "summary": "Get an SPV request",
+        "description": "Returns a single SPV request scoped to the caller's `client_id`.",
+        "operationId": "getSpvRequest",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            },
+            "name": "slug",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpvRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPV request not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "SPV Requests"
+        ],
+        "summary": "Cancel an SPV request",
+        "description": "Cancels a pending-review SPV request. Returns 409 if the request is in a terminal state (approved, rejected, or already cancelled).",
+        "operationId": "cancelSpvRequest",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            },
+            "name": "slug",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpvRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPV request not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SPV request is in a terminal state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/investors": {
+      "post": {
+        "tags": [
+          "Investors"
+        ],
+        "summary": "Bulk create investors",
+        "description": "Creates one or more investor records. Always returns 200 with a per-row { status, zestPersonId | error } result keyed by `partnerInvestorId`. Idempotent across replays: a repeated `partnerInvestorId` returns the existing Zest person id. `Idempotency-Key` is optional and provides response-level caching.",
+        "operationId": "bulkCreateInvestors",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            },
+            "name": "Idempotency-Key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvestorBulkCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvestorBulkResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Service not provisioned for partner API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency-Key conflict (different body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/spvs/{spv_slug}/subscriptions": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "Create subscriptions for one SPV",
+        "description": "Creates one or more subscription rows for a single SPV. Per investor: lump sum + share class. `Idempotency-Key` is optional.",
+        "operationId": "createSubscriptions",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Spv Slug"
+            },
+            "name": "spv_slug",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            },
+            "name": "Idempotency-Key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionBulkCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionBulkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Service not provisioned for partner API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPV not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency-Key conflict (different body)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/spvs/{spv_slug}/subscription/{person_id}/forms": {
+      "post": {
+        "tags": [
+          "Subscription Forms"
+        ],
+        "summary": "Upload signed subscription form",
+        "description": "Uploads a signed subscription form for a partner-managed subscription. Multipart/form-data with a single `file` field. Max 10 MB. Allowed content types: PDF, JPEG, PNG, WEBP. Emits `signed_subscription_form.uploaded` webhook on success.",
+        "operationId": "uploadSubscriptionForm",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Spv Slug"
+            },
+            "name": "spv_slug",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Person Id"
+            },
+            "name": "person_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_uploadSubscriptionForm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FormUploadResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Service not provisioned for partner API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPV or person not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Bid is in a terminal status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File too large (>10 MB)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported media type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v1/spvs/{spv_slug}/subscription/{person_id}/fundings": {
+      "post": {
+        "tags": [
+          "Subscription Fundings"
+        ],
+        "summary": "Upload funding receipt",
+        "description": "Uploads a wire-transfer receipt + funding metadata (amount / currency / wire_reference) for a partner-managed subscription. Q6c strict order: the signed subscription form must already be on record, otherwise this endpoint returns 409. Emits `funding_receipt.uploaded` webhook on success.",
+        "operationId": "uploadFundingReceipt",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Spv Slug"
+            },
+            "name": "spv_slug",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Person Id"
+            },
+            "name": "person_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_uploadFundingReceipt"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FundingUploadResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Service not provisioned for partner API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SPV or person not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Form not on record yet, or terminal status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File too large (>10 MB)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported media type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartnerErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AggregationResponse": {
+        "properties": {
+          "documents": {
+            "items": {},
+            "type": "array",
+            "title": "Documents"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count",
+            "default": 0
+          },
+          "skip": {
+            "type": "integer",
+            "title": "Skip",
+            "default": 0
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "documents"
+        ],
+        "title": "AggregationResponse"
+      },
+      "Body_exchangeJwtAssertion": {
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "title": "Grant Type"
+          },
+          "assertion": {
+            "type": "string",
+            "title": "Assertion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "grant_type",
+          "assertion"
+        ],
+        "title": "Body_exchangeJwtAssertion"
+      },
+      "Body_uploadFundingReceipt": {
+        "properties": {
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "wireReference": {
+            "type": "string",
+            "title": "Wirereference"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "amount",
+          "currency",
+          "wireReference",
+          "file"
+        ],
+        "title": "Body_uploadFundingReceipt"
+      },
+      "Body_uploadSubscriptionForm": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_uploadSubscriptionForm"
+      },
+      "FeesAndCarryResponse": {
+        "properties": {
+          "shareClasses": {
+            "items": {
+              "$ref": "#/components/schemas/ShareClassFeesAndCarry"
+            },
+            "type": "array",
+            "title": "Shareclasses"
+          }
+        },
+        "type": "object",
+        "title": "FeesAndCarryResponse"
+      },
+      "FormUploadResponse": {
+        "properties": {
+          "subscriptionSlug": {
+            "type": "string",
+            "title": "Subscriptionslug"
+          },
+          "spvSlug": {
+            "type": "string",
+            "title": "Spvslug"
+          },
+          "personId": {
+            "type": "string",
+            "title": "Personid"
+          },
+          "subscriptionFormUrl": {
+            "type": "string",
+            "title": "Subscriptionformurl"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Uploadedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subscriptionSlug",
+          "spvSlug",
+          "personId",
+          "subscriptionFormUrl",
+          "uploadedAt"
+        ],
+        "title": "FormUploadResponse"
+      },
+      "FundingUploadResponse": {
+        "properties": {
+          "subscriptionSlug": {
+            "type": "string",
+            "title": "Subscriptionslug"
+          },
+          "spvSlug": {
+            "type": "string",
+            "title": "Spvslug"
+          },
+          "personId": {
+            "type": "string",
+            "title": "Personid"
+          },
+          "fundingReceiptUrl": {
+            "type": "string",
+            "title": "Fundingreceipturl"
+          },
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "wireReference": {
+            "type": "string",
+            "title": "Wirereference"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Uploadedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subscriptionSlug",
+          "spvSlug",
+          "personId",
+          "fundingReceiptUrl",
+          "amount",
+          "currency",
+          "wireReference",
+          "uploadedAt"
+        ],
+        "title": "FundingUploadResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InfoResponse": {
+        "properties": {
+          "clientType": {
+            "type": "string",
+            "enum": [
+              "service",
+              "user",
+              "application"
+            ],
+            "title": "Clienttype"
+          },
+          "clientId": {
+            "type": "string",
+            "title": "Clientid"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "clientType",
+          "clientId"
+        ],
+        "title": "InfoResponse"
+      },
+      "InvestorBulkCreate": {
+        "properties": {
+          "investors": {
+            "items": {
+              "$ref": "#/components/schemas/InvestorCreateRow"
+            },
+            "type": "array",
+            "title": "Investors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "investors"
+        ],
+        "title": "InvestorBulkCreate"
+      },
+      "InvestorBulkResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/InvestorRowResult"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "InvestorBulkResponse"
+      },
+      "InvestorCreateRow": {
+        "properties": {
+          "partnerInvestorId": {
+            "type": "string",
+            "title": "Partnerinvestorid",
+            "description": "Stable partner-side investor identifier; used for response correlation + dedupe.",
+            "example": "acme-inv-7341"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "example": "alice@example.com"
+          },
+          "firstName": {
+            "type": "string",
+            "title": "Firstname",
+            "example": "Alice"
+          },
+          "lastName": {
+            "type": "string",
+            "title": "Lastname",
+            "example": "Liddell"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "title": "Dateofbirth",
+            "description": "ISO date YYYY-MM-DD.",
+            "example": "1985-04-12"
+          },
+          "countryOfResidence": {
+            "type": "string",
+            "title": "Countryofresidence",
+            "description": "ISO 3166 alpha-2 country code.",
+            "example": "AE"
+          }
+        },
+        "type": "object",
+        "required": [
+          "partnerInvestorId",
+          "email",
+          "firstName",
+          "lastName",
+          "dateOfBirth"
+        ],
+        "title": "InvestorCreateRow"
+      },
+      "InvestorRowError": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "retryable": {
+            "type": "boolean",
+            "title": "Retryable"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "title": "InvestorRowError"
+      },
+      "InvestorRowResult": {
+        "properties": {
+          "partnerInvestorId": {
+            "type": "string",
+            "title": "Partnerinvestorid"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "zestPersonId": {
+            "type": "string",
+            "title": "Zestpersonid"
+          },
+          "error": {
+            "$ref": "#/components/schemas/InvestorRowError"
+          }
+        },
+        "type": "object",
+        "required": [
+          "partnerInvestorId",
+          "status"
+        ],
+        "title": "InvestorRowResult"
+      },
+      "MaterialisedRefsResponse": {
+        "properties": {
+          "opportunitySlug": {
+            "type": "string",
+            "title": "Opportunityslug"
+          },
+          "vehicleSlug": {
+            "type": "string",
+            "title": "Vehicleslug"
+          },
+          "spSlug": {
+            "type": "string",
+            "title": "Spslug"
+          },
+          "spcSlug": {
+            "type": "string",
+            "title": "Spcslug"
+          }
+        },
+        "type": "object",
+        "required": [
+          "opportunitySlug",
+          "vehicleSlug",
+          "spSlug",
+          "spcSlug"
+        ],
+        "title": "MaterialisedRefsResponse"
+      },
+      "PartnerErrorResponse": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "default": "ex: Something went wrong",
+            "examples": [
+              "Something went wrong"
+            ]
+          },
+          "errorId": {
+            "type": "string",
+            "title": "Errorid"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Stable top-level error code (see PartnerErrorCode enum)."
+          },
+          "validationErrors": {
+            "items": {
+              "$ref": "#/components/schemas/PartnerValidationError"
+            },
+            "type": "array",
+            "title": "Validationerrors",
+            "description": "Populated only when code='validation_error'."
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "PartnerErrorResponse"
+      },
+      "PartnerValidationError": {
+        "properties": {
+          "attribute": {
+            "type": "string",
+            "title": "Attribute",
+            "description": "Attribute path (e.g. 'deal_name', 'share_class.name')."
+          },
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "Stable validation error code (see ValidationErrorCode enum)."
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Human-readable message."
+          }
+        },
+        "type": "object",
+        "required": [
+          "attribute",
+          "code",
+          "message"
+        ],
+        "title": "PartnerValidationError"
+      },
+      "ShareClassFeesAndCarry": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "slug": {
+            "type": "string",
+            "title": "Slug"
+          },
+          "managementFeePercent": {
+            "type": "string",
+            "title": "Managementfeepercent"
+          },
+          "carryPercent": {
+            "type": "string",
+            "title": "Carrypercent"
+          },
+          "setupFee": {
+            "type": "object",
+            "title": "Setupfee"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "slug"
+        ],
+        "title": "ShareClassFeesAndCarry"
+      },
+      "SpvRequestCreate": {
+        "properties": {
+          "templateId": {
+            "type": "string",
+            "title": "Templateid",
+            "description": "Contract template id provided during onboarding.",
+            "example": "<your_template_id>"
+          },
+          "templateVersion": {
+            "type": "string",
+            "title": "Templateversion",
+            "description": "Contract template version (e.g. '1.0.0').",
+            "example": "1.0.0"
+          },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "description": "Flat attribute map validated against the template.",
+            "example": {
+              "deal_name": "Acme Holdings Series A Syndicate",
+              "deal_slug": "acme-series-a-2026",
+              "company_id": "<your_company_id>",
+              "deal_type": "<your_deal_type>",
+              "security_type": "Equity",
+              "currency": "USD",
+              "price_per_share": {
+                "currency": "USD",
+                "value": "36.97"
+              },
+              "is_fixed_price": true,
+              "minimum_ticket_size": {
+                "currency": "USD",
+                "value": "1000"
+              },
+              "start_date": "2026-06-01T00:00:00Z",
+              "status_tag": "Live",
+              "deal_stage": "executing",
+              "investment_summary": "Subscription into Acme Holdings Series A shares.",
+              "deal_documents_title": "Acme Series A Deck",
+              "deal_documents_url": "https://example.com/acme-deck.pdf",
+              "deal_documents_media_type": "pdf",
+              "share_class_name": "Class A",
+              "share_class_slug": "acme-class-a",
+              "link_enabled": true,
+              "private_code": "ACME01"
+            }
+          }
+        },
+        "type": "object",
+        "required": [
+          "templateId",
+          "templateVersion",
+          "attributes"
+        ],
+        "title": "SpvRequestCreate"
+      },
+      "SpvRequestResponse": {
+        "properties": {
+          "spvRequestSlug": {
+            "type": "string",
+            "title": "Spvrequestslug"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SpvRequestStatus"
+          },
+          "templateId": {
+            "type": "string",
+            "title": "Templateid"
+          },
+          "templateVersion": {
+            "type": "string",
+            "title": "Templateversion"
+          },
+          "tenantSlug": {
+            "type": "string",
+            "title": "Tenantslug"
+          },
+          "clientId": {
+            "type": "string",
+            "title": "Clientid"
+          },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes"
+          },
+          "rejectionReason": {
+            "type": "string",
+            "title": "Rejectionreason"
+          },
+          "cancelledAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Cancelledat"
+          },
+          "approvedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Approvedat"
+          },
+          "materialisedRefs": {
+            "$ref": "#/components/schemas/MaterialisedRefsResponse"
+          },
+          "feesAndCarry": {
+            "$ref": "#/components/schemas/FeesAndCarryResponse"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "spvRequestSlug",
+          "status",
+          "templateId",
+          "templateVersion",
+          "tenantSlug",
+          "clientId",
+          "attributes",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "SpvRequestResponse"
+      },
+      "SpvRequestStatus": {
+        "type": "string",
+        "enum": [
+          "pending-review",
+          "approved",
+          "rejected",
+          "cancelled"
+        ],
+        "title": "SpvRequestStatus",
+        "description": "An enumeration."
+      },
+      "SubscriptionBulkCreate": {
+        "properties": {
+          "subscriptions": {
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionCreateRow"
+            },
+            "type": "array",
+            "title": "Subscriptions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subscriptions"
+        ],
+        "title": "SubscriptionBulkCreate"
+      },
+      "SubscriptionBulkResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionResult"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "title": "SubscriptionBulkResponse"
+      },
+      "SubscriptionCreateRow": {
+        "properties": {
+          "partnerSubscriptionId": {
+            "type": "string",
+            "title": "Partnersubscriptionid",
+            "description": "Optional partner-side subscription id; echoed on the response for correlation.",
+            "example": "acme-sub-9921"
+          },
+          "zestPersonId": {
+            "type": "string",
+            "title": "Zestpersonid",
+            "example": "psn_abc123"
+          },
+          "lumpSum": {
+            "type": "object",
+            "title": "Lumpsum",
+            "description": "{currency, value} object — currency is ISO 4217, value is a decimal string.",
+            "example": {
+              "currency": "USD",
+              "value": "50000.00"
+            }
+          },
+          "shareClassSlug": {
+            "type": "string",
+            "title": "Shareclassslug",
+            "example": "sc_classA"
+          }
+        },
+        "type": "object",
+        "required": [
+          "zestPersonId",
+          "lumpSum",
+          "shareClassSlug"
+        ],
+        "title": "SubscriptionCreateRow"
+      },
+      "SubscriptionResult": {
+        "properties": {
+          "partnerSubscriptionId": {
+            "type": "string",
+            "title": "Partnersubscriptionid"
+          },
+          "subscriptionSlug": {
+            "type": "string",
+            "title": "Subscriptionslug"
+          },
+          "spvSlug": {
+            "type": "string",
+            "title": "Spvslug"
+          },
+          "personId": {
+            "type": "string",
+            "title": "Personid"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "lumpSum": {
+            "type": "object",
+            "title": "Lumpsum"
+          },
+          "shareClassSlug": {
+            "type": "string",
+            "title": "Shareclassslug"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subscriptionSlug",
+          "spvSlug",
+          "personId",
+          "status",
+          "lumpSum",
+          "shareClassSlug"
+        ],
+        "title": "SubscriptionResult"
+      },
+      "TokenResponse": {
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "title": "Accesstoken"
+          },
+          "refreshToken": {
+            "type": "string",
+            "title": "Refreshtoken"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accessToken"
+        ],
+        "title": "TokenResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call."
+    },
+    {
+      "name": "SPV Requests",
+      "description": "Submit SPV creation requests, inspect their lifecycle, and cancel pending ones. SPV requests are reviewed by Zest admins and produce SPV materialisation on approval."
+    },
+    {
+      "name": "Investors",
+      "description": "Bulk-create investor records with partial-success semantics. Each row carries its own status / error envelope so a single bad row never fails the batch."
+    },
+    {
+      "name": "Subscriptions",
+      "description": "Create one or more subscriptions for a single SPV."
+    },
+    {
+      "name": "Subscription Forms",
+      "description": "Upload signed subscription forms (PDF or image) for partner-managed subscriptions. Files are streamed to private storage and referenced on the Bid."
+    },
+    {
+      "name": "Subscription Fundings",
+      "description": "Upload wire-transfer receipts plus funding metadata. Strict order: a signed form must already be on record before fundings can be uploaded."
+    },
+    {
+      "name": "Contracts",
+      "description": "Read-only access to the spaas-contract registry (templates, catalogs, primitives, samples) used to validate SPV-request `attributes`."
+    },
+    {
+      "name": "System",
+      "description": "Service health and OpenAPI introspection endpoints."
+    }
+  ]
+}

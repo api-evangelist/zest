@@ -1,0 +1,43 @@
+generated: '2026-07-21'
+method: searched
+source: openapi/zest-openapi-original.json
+docs: https://docs.zestequity.com/api-reference/authentication/exchange-a-jwt-assertion-for-an-access-token
+summary:
+  types:
+  - http
+  - oauth2
+  http_schemes:
+  - bearer
+  oauth2_grants:
+  - urn:ietf:params:oauth:grant-type:jwt-bearer
+model: >-
+  Partner-signed JWT-Bearer assertion grant (RFC 7523). The partner mints a
+  short-lived JWT signed with an EdDSA private key registered with Zest, then
+  exchanges it at POST /v1/oauth2/tokens for a short-lived bearer access token.
+  The bearer token is sent in the Authorization header on every partner API
+  call. HTTPBearer is the only OpenAPI-declared security scheme.
+jwt_assertion_claims:
+  iss: Partner API base URL
+  sub: Partner client_id
+  aud: https://sandbox-api.zestequity.com
+  client_id: Partner client_id
+  iat: now (unix seconds)
+  exp: now + 60
+signing_algorithm: EdDSA
+token_endpoint: https://sandbox-api.zestequity.com/v1/oauth2/tokens
+token_response:
+  accessToken: bearer JWT
+  refreshToken: JWT
+  tokenType: Bearer
+  expiresIn: 3600
+  refreshExpiresIn: 2592000
+schemes:
+- name: HTTPBearer
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/zest-openapi-original.json
+provisioning: >-
+  Sandbox client_id, the matching EdDSA private key, and a registered webhook
+  URL + signing secret are provisioned during partner onboarding. Contact
+  sara@zestholdco.com.
