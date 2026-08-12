@@ -179,6 +179,8 @@ apis:
   - type: GettingStarted
     url: https://docs.zestequity.com/quickstart
 common:
+- type: Overlay
+  url: overlays/zest-openapi-overlay.yaml
 - type: Documentation
   url: https://docs.zestequity.com
 - type: DeveloperPortal
