@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication Subscription Fundings API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscription Fundings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload funding receipt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-api.zestequity.com/v1/spvs/:spv_slug/subscription/:person_id/fundings",
+            "params": [
+              {
+                "name": "spv_slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "person_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Uploads a wire-transfer receipt + funding metadata (amount / currency / wire_reference) for a partner-managed subscription. Q6c strict order: the signed subscription form must already be on record, otherwise this endpoint returns 409. Emits `funding_receipt.uploaded` webhook on success."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Exchange a JWT assertion for an access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-api.zestequity.com/v1/oauth2/tokens",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "OAuth 2.0 JWT-Bearer assertion grant. Submit `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer` plus a signed JWT `assertion`. Returns a short-lived bearer access token used for subsequent partner API calls."
+        },
+        {
+          "info": {
+            "name": "Inspect the current access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/oauth2/info",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns metadata about the bearer token currently presented in the Authorization header. Useful for verifying that a token corresponds to the expected partner application."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

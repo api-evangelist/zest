@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication Subscription Forms API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscription Forms",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload signed subscription form",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-api.zestequity.com/v1/spvs/:spv_slug/subscription/:person_id/forms",
+            "params": [
+              {
+                "name": "spv_slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "person_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Uploads a signed subscription form for a partner-managed subscription. Multipart/form-data with a single `file` field. Max 10 MB. Allowed content types: PDF, JPEG, PNG, WEBP. Emits `signed_subscription_form.uploaded` webhook on success."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

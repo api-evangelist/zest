@@ -1,0 +1,1315 @@
+{
+  "item": [
+    {
+      "id": "71846d6b-dc2c-4352-b32d-fe4cd48c092c",
+      "name": "SPV Requests",
+      "description": {
+        "content": "Submit SPV creation requests, inspect their lifecycle, and cancel pending ones. SPV requests are reviewed by Zest admins and produce SPV materialisation on approval.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "94dcb390-65d0-4bd0-9aa2-75e85e3a3992",
+          "name": "List SPV requests",
+          "request": {
+            "name": "List SPV requests",
+            "description": {
+              "content": "Returns a paginated list of SPV requests scoped to the caller's `client_id`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "spv-requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5bf530f7-358c-4dd5-8075-4074356352f3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "status",
+                      "value": "rejected"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"documents\": [],\n  \"count\": 0,\n  \"skip\": 0,\n  \"limit\": 10\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d5ab948-4eb7-430d-a7a5-372ea5008c68",
+              "name": "Invalid token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "status",
+                      "value": "rejected"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2299ef2b-89f1-4334-b24c-a4fa5deb5c59",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "perPage",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "status",
+                      "value": "rejected"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e56c4d42-3359-49ba-8f13-745b9aaae752",
+          "name": "Create an SPV request",
+          "request": {
+            "name": "Create an SPV request",
+            "description": {
+              "content": "Submits an SPV creation request. Validation runs against the spaas-contract template indicated by `templateId`. On success, Zest fires `spv_request.created`. Admin review materialises the SPV; success fires `spv_request.completed`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "spv-requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "Idempotency-Key",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"templateId\": \"<string>\",\n  \"templateVersion\": \"<string>\",\n  \"attributes\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "889d24f8-57c8-4920-9423-95eb158baac0",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<your_template_id>\",\n  \"templateVersion\": \"1.0.0\",\n  \"attributes\": {\n    \"deal_name\": \"Acme Holdings Series A Syndicate\",\n    \"deal_slug\": \"acme-series-a-2026\",\n    \"company_id\": \"<your_company_id>\",\n    \"deal_type\": \"<your_deal_type>\",\n    \"security_type\": \"Equity\",\n    \"currency\": \"USD\",\n    \"price_per_share\": {\n      \"currency\": \"USD\",\n      \"value\": \"36.97\"\n    },\n    \"is_fixed_price\": true,\n    \"minimum_ticket_size\": {\n      \"currency\": \"USD\",\n      \"value\": \"1000\"\n    },\n    \"start_date\": \"2026-06-01T00:00:00Z\",\n    \"status_tag\": \"Live\",\n    \"deal_stage\": \"executing\",\n    \"investment_summary\": \"Subscription into Acme Holdings Series A shares.\",\n    \"deal_documents_title\": \"Acme Series A Deck\",\n    \"deal_documents_url\": \"https://example.com/acme-deck.pdf\",\n    \"deal_documents_media_type\": \"pdf\",\n    \"share_class_name\": \"Class A\",\n    \"share_class_slug\": \"acme-class-a\",\n    \"link_enabled\": true,\n    \"private_code\": \"ACME01\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"spvRequestSlug\": \"string\",\n  \"status\": \"pending-review\",\n  \"templateId\": \"string\",\n  \"templateVersion\": \"string\",\n  \"tenantSlug\": \"string\",\n  \"clientId\": \"string\",\n  \"attributes\": {},\n  \"createdAt\": \"1990-11-24T20:37:54.284Z\",\n  \"updatedAt\": \"1997-05-24T01:12:28.459Z\",\n  \"rejectionReason\": \"string\",\n  \"cancelledAt\": \"2005-01-05T22:43:33.823Z\",\n  \"approvedAt\": \"2012-01-23T18:04:14.906Z\",\n  \"materialisedRefs\": {\n    \"opportunitySlug\": \"string\",\n    \"vehicleSlug\": \"string\",\n    \"spSlug\": \"string\",\n    \"spcSlug\": \"string\"\n  },\n  \"feesAndCarry\": {\n    \"shareClasses\": [\n      {\n        \"name\": \"string\",\n        \"slug\": \"string\",\n        \"managementFeePercent\": \"string\",\n        \"carryPercent\": \"string\",\n        \"setupFee\": {}\n      },\n      {\n        \"name\": \"string\",\n        \"slug\": \"string\",\n        \"managementFeePercent\": \"string\",\n        \"carryPercent\": \"string\",\n        \"setupFee\": {}\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81b8a315-6acd-41da-a5e7-22d1967bc6dd",
+              "name": "Contract validation failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<your_template_id>\",\n  \"templateVersion\": \"1.0.0\",\n  \"attributes\": {\n    \"deal_name\": \"Acme Holdings Series A Syndicate\",\n    \"deal_slug\": \"acme-series-a-2026\",\n    \"company_id\": \"<your_company_id>\",\n    \"deal_type\": \"<your_deal_type>\",\n    \"security_type\": \"Equity\",\n    \"currency\": \"USD\",\n    \"price_per_share\": {\n      \"currency\": \"USD\",\n      \"value\": \"36.97\"\n    },\n    \"is_fixed_price\": true,\n    \"minimum_ticket_size\": {\n      \"currency\": \"USD\",\n      \"value\": \"1000\"\n    },\n    \"start_date\": \"2026-06-01T00:00:00Z\",\n    \"status_tag\": \"Live\",\n    \"deal_stage\": \"executing\",\n    \"investment_summary\": \"Subscription into Acme Holdings Series A shares.\",\n    \"deal_documents_title\": \"Acme Series A Deck\",\n    \"deal_documents_url\": \"https://example.com/acme-deck.pdf\",\n    \"deal_documents_media_type\": \"pdf\",\n    \"share_class_name\": \"Class A\",\n    \"share_class_slug\": \"acme-class-a\",\n    \"link_enabled\": true,\n    \"private_code\": \"ACME01\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "485a4809-7007-4cb5-bbb2-d6e87a79cb90",
+              "name": "Invalid token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<your_template_id>\",\n  \"templateVersion\": \"1.0.0\",\n  \"attributes\": {\n    \"deal_name\": \"Acme Holdings Series A Syndicate\",\n    \"deal_slug\": \"acme-series-a-2026\",\n    \"company_id\": \"<your_company_id>\",\n    \"deal_type\": \"<your_deal_type>\",\n    \"security_type\": \"Equity\",\n    \"currency\": \"USD\",\n    \"price_per_share\": {\n      \"currency\": \"USD\",\n      \"value\": \"36.97\"\n    },\n    \"is_fixed_price\": true,\n    \"minimum_ticket_size\": {\n      \"currency\": \"USD\",\n      \"value\": \"1000\"\n    },\n    \"start_date\": \"2026-06-01T00:00:00Z\",\n    \"status_tag\": \"Live\",\n    \"deal_stage\": \"executing\",\n    \"investment_summary\": \"Subscription into Acme Holdings Series A shares.\",\n    \"deal_documents_title\": \"Acme Series A Deck\",\n    \"deal_documents_url\": \"https://example.com/acme-deck.pdf\",\n    \"deal_documents_media_type\": \"pdf\",\n    \"share_class_name\": \"Class A\",\n    \"share_class_slug\": \"acme-class-a\",\n    \"link_enabled\": true,\n    \"private_code\": \"ACME01\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebf1ee25-c3c2-450b-8e80-8291ab202b2c",
+              "name": "Service not provisioned for partner API",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<your_template_id>\",\n  \"templateVersion\": \"1.0.0\",\n  \"attributes\": {\n    \"deal_name\": \"Acme Holdings Series A Syndicate\",\n    \"deal_slug\": \"acme-series-a-2026\",\n    \"company_id\": \"<your_company_id>\",\n    \"deal_type\": \"<your_deal_type>\",\n    \"security_type\": \"Equity\",\n    \"currency\": \"USD\",\n    \"price_per_share\": {\n      \"currency\": \"USD\",\n      \"value\": \"36.97\"\n    },\n    \"is_fixed_price\": true,\n    \"minimum_ticket_size\": {\n      \"currency\": \"USD\",\n      \"value\": \"1000\"\n    },\n    \"start_date\": \"2026-06-01T00:00:00Z\",\n    \"status_tag\": \"Live\",\n    \"deal_stage\": \"executing\",\n    \"investment_summary\": \"Subscription into Acme Holdings Series A shares.\",\n    \"deal_documents_title\": \"Acme Series A Deck\",\n    \"deal_documents_url\": \"https://example.com/acme-deck.pdf\",\n    \"deal_documents_media_type\": \"pdf\",\n    \"share_class_name\": \"Class A\",\n    \"share_class_slug\": \"acme-class-a\",\n    \"link_enabled\": true,\n    \"private_code\": \"ACME01\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52492ec3-66f9-4a80-a0ed-0adf97ef34ae",
+              "name": "Template not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<your_template_id>\",\n  \"templateVersion\": \"1.0.0\",\n  \"attributes\": {\n    \"deal_name\": \"Acme Holdings Series A Syndicate\",\n    \"deal_slug\": \"acme-series-a-2026\",\n    \"company_id\": \"<your_company_id>\",\n    \"deal_type\": \"<your_deal_type>\",\n    \"security_type\": \"Equity\",\n    \"currency\": \"USD\",\n    \"price_per_share\": {\n      \"currency\": \"USD\",\n      \"value\": \"36.97\"\n    },\n    \"is_fixed_price\": true,\n    \"minimum_ticket_size\": {\n      \"currency\": \"USD\",\n      \"value\": \"1000\"\n    },\n    \"start_date\": \"2026-06-01T00:00:00Z\",\n    \"status_tag\": \"Live\",\n    \"deal_stage\": \"executing\",\n    \"investment_summary\": \"Subscription into Acme Holdings Series A shares.\",\n    \"deal_documents_title\": \"Acme Series A Deck\",\n    \"deal_documents_url\": \"https://example.com/acme-deck.pdf\",\n    \"deal_documents_media_type\": \"pdf\",\n    \"share_class_name\": \"Class A\",\n    \"share_class_slug\": \"acme-class-a\",\n    \"link_enabled\": true,\n    \"private_code\": \"ACME01\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89aa6b7e-571f-4130-918c-2e15cb10267d",
+              "name": "Idempotency-Key conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<your_template_id>\",\n  \"templateVersion\": \"1.0.0\",\n  \"attributes\": {\n    \"deal_name\": \"Acme Holdings Series A Syndicate\",\n    \"deal_slug\": \"acme-series-a-2026\",\n    \"company_id\": \"<your_company_id>\",\n    \"deal_type\": \"<your_deal_type>\",\n    \"security_type\": \"Equity\",\n    \"currency\": \"USD\",\n    \"price_per_share\": {\n      \"currency\": \"USD\",\n      \"value\": \"36.97\"\n    },\n    \"is_fixed_price\": true,\n    \"minimum_ticket_size\": {\n      \"currency\": \"USD\",\n      \"value\": \"1000\"\n    },\n    \"start_date\": \"2026-06-01T00:00:00Z\",\n    \"status_tag\": \"Live\",\n    \"deal_stage\": \"executing\",\n    \"investment_summary\": \"Subscription into Acme Holdings Series A shares.\",\n    \"deal_documents_title\": \"Acme Series A Deck\",\n    \"deal_documents_url\": \"https://example.com/acme-deck.pdf\",\n    \"deal_documents_media_type\": \"pdf\",\n    \"share_class_name\": \"Class A\",\n    \"share_class_slug\": \"acme-class-a\",\n    \"link_enabled\": true,\n    \"private_code\": \"ACME01\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e299e928-4de2-4264-8f35-2039c7fbc168",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Idempotency-Key",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<your_template_id>\",\n  \"templateVersion\": \"1.0.0\",\n  \"attributes\": {\n    \"deal_name\": \"Acme Holdings Series A Syndicate\",\n    \"deal_slug\": \"acme-series-a-2026\",\n    \"company_id\": \"<your_company_id>\",\n    \"deal_type\": \"<your_deal_type>\",\n    \"security_type\": \"Equity\",\n    \"currency\": \"USD\",\n    \"price_per_share\": {\n      \"currency\": \"USD\",\n      \"value\": \"36.97\"\n    },\n    \"is_fixed_price\": true,\n    \"minimum_ticket_size\": {\n      \"currency\": \"USD\",\n      \"value\": \"1000\"\n    },\n    \"start_date\": \"2026-06-01T00:00:00Z\",\n    \"status_tag\": \"Live\",\n    \"deal_stage\": \"executing\",\n    \"investment_summary\": \"Subscription into Acme Holdings Series A shares.\",\n    \"deal_documents_title\": \"Acme Series A Deck\",\n    \"deal_documents_url\": \"https://example.com/acme-deck.pdf\",\n    \"deal_documents_media_type\": \"pdf\",\n    \"share_class_name\": \"Class A\",\n    \"share_class_slug\": \"acme-class-a\",\n    \"link_enabled\": true,\n    \"private_code\": \"ACME01\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f9cbd6e0-ba3b-4eb9-a222-ff2d018d3962",
+          "name": "Get an SPV request",
+          "request": {
+            "name": "Get an SPV request",
+            "description": {
+              "content": "Returns a single SPV request scoped to the caller's `client_id`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "spv-requests",
+                ":slug"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "slug",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "de8268fe-8704-45c3-86b5-91f2a2ff029e",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"spvRequestSlug\": \"string\",\n  \"status\": \"pending-review\",\n  \"templateId\": \"string\",\n  \"templateVersion\": \"string\",\n  \"tenantSlug\": \"string\",\n  \"clientId\": \"string\",\n  \"attributes\": {},\n  \"createdAt\": \"1990-11-24T20:37:54.284Z\",\n  \"updatedAt\": \"1997-05-24T01:12:28.459Z\",\n  \"rejectionReason\": \"string\",\n  \"cancelledAt\": \"2005-01-05T22:43:33.823Z\",\n  \"approvedAt\": \"2012-01-23T18:04:14.906Z\",\n  \"materialisedRefs\": {\n    \"opportunitySlug\": \"string\",\n    \"vehicleSlug\": \"string\",\n    \"spSlug\": \"string\",\n    \"spcSlug\": \"string\"\n  },\n  \"feesAndCarry\": {\n    \"shareClasses\": [\n      {\n        \"name\": \"string\",\n        \"slug\": \"string\",\n        \"managementFeePercent\": \"string\",\n        \"carryPercent\": \"string\",\n        \"setupFee\": {}\n      },\n      {\n        \"name\": \"string\",\n        \"slug\": \"string\",\n        \"managementFeePercent\": \"string\",\n        \"carryPercent\": \"string\",\n        \"setupFee\": {}\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c2f6ac0f-d570-4ba2-a3dc-1f042acb5087",
+              "name": "Invalid token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5314cbab-5c14-45a2-b696-83a1e69accc5",
+              "name": "SPV request not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36003360-708a-4fe7-aa8f-ab15711d25d3",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4b3e6184-2d40-4fc8-b2ae-9955e66572c3",
+          "name": "Cancel an SPV request",
+          "request": {
+            "name": "Cancel an SPV request",
+            "description": {
+              "content": "Cancels a pending-review SPV request. Returns 409 if the request is in a terminal state (approved, rejected, or already cancelled).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "spv-requests",
+                ":slug"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "slug",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "71ceb828-d821-4f05-af18-80bca4b226e8",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"spvRequestSlug\": \"string\",\n  \"status\": \"pending-review\",\n  \"templateId\": \"string\",\n  \"templateVersion\": \"string\",\n  \"tenantSlug\": \"string\",\n  \"clientId\": \"string\",\n  \"attributes\": {},\n  \"createdAt\": \"1990-11-24T20:37:54.284Z\",\n  \"updatedAt\": \"1997-05-24T01:12:28.459Z\",\n  \"rejectionReason\": \"string\",\n  \"cancelledAt\": \"2005-01-05T22:43:33.823Z\",\n  \"approvedAt\": \"2012-01-23T18:04:14.906Z\",\n  \"materialisedRefs\": {\n    \"opportunitySlug\": \"string\",\n    \"vehicleSlug\": \"string\",\n    \"spSlug\": \"string\",\n    \"spcSlug\": \"string\"\n  },\n  \"feesAndCarry\": {\n    \"shareClasses\": [\n      {\n        \"name\": \"string\",\n        \"slug\": \"string\",\n        \"managementFeePercent\": \"string\",\n        \"carryPercent\": \"string\",\n        \"setupFee\": {}\n      },\n      {\n        \"name\": \"string\",\n        \"slug\": \"string\",\n        \"managementFeePercent\": \"string\",\n        \"carryPercent\": \"string\",\n        \"setupFee\": {}\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4ba2cf2-0470-4d40-9bdd-45c13678e58f",
+              "name": "Invalid token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "762f8f90-1f5d-4bc0-97ae-1a0781ae69d9",
+              "name": "SPV request not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fceb4c01-bb82-40bf-a237-f150990a0ec8",
+              "name": "SPV request is in a terminal state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e34992a9-a306-42ab-92f2-1ee56ba59dde",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "spv-requests",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox-api.zestequity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "daef32b4-e432-4cd1-862b-abe9f0d3cb02",
+    "name": "Zest equity public api Authentication SPV Requests API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.",
+      "type": "text/plain"
+    }
+  }
+}

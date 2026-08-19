@@ -1,0 +1,50 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication Subscriptions API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create subscriptions for one SPV",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-api.zestequity.com/v1/spvs/:spv_slug/subscriptions",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "spv_slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates one or more subscription rows for a single SPV. Per investor: lump sum + share class. `Idempotency-Key` is optional."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

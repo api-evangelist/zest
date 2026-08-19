@@ -1,0 +1,193 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication Contracts API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contracts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available contract versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts"
+          },
+          "docs": "List available contract versions"
+        },
+        {
+          "info": {
+            "name": "List template definitions for a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/templates/:version",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List template definitions for a version"
+        },
+        {
+          "info": {
+            "name": "Retrieve a specific template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/templates/:version/:template_name",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "template_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific template"
+        },
+        {
+          "info": {
+            "name": "List attribute catalogs for a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/catalogs/:version",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List attribute catalogs for a version"
+        },
+        {
+          "info": {
+            "name": "Retrieve a specific attribute catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/catalogs/:version/:catalog_name",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "catalog_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific attribute catalog"
+        },
+        {
+          "info": {
+            "name": "List primitive/type specifications for a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/primitives/:version",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List primitive/type specifications for a version"
+        },
+        {
+          "info": {
+            "name": "Retrieve a primitive/type definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/primitives/:version/:primitive_name",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "primitive_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a primitive/type definition"
+        },
+        {
+          "info": {
+            "name": "List sample payloads for a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/samples/:version",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List sample payloads for a version"
+        },
+        {
+          "info": {
+            "name": "Retrieve a sample payload",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/contracts/samples/:version/:sample_name",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "sample_name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a sample payload"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

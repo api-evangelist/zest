@@ -1,0 +1,385 @@
+{
+  "item": [
+    {
+      "id": "8e839827-1a20-41ee-a983-e5094edd21c5",
+      "name": "Investors",
+      "description": {
+        "content": "Bulk-create investor records with partial-success semantics. Each row carries its own status / error envelope so a single bad row never fails the batch.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "85e72d01-ccc6-47e3-94bc-e919fa0f9127",
+          "name": "Bulk create investors",
+          "request": {
+            "name": "Bulk create investors",
+            "description": {
+              "content": "Creates one or more investor records. Always returns 200 with a per-row { status, zestPersonId | error } result keyed by `partnerInvestorId`. Idempotent across replays: a repeated `partnerInvestorId` returns the existing Zest person id. `Idempotency-Key` is optional and provides response-level caching.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "investors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "Idempotency-Key",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"investors\": [\n    {\n      \"partnerInvestorId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"dateOfBirth\": \"<string>\",\n      \"countryOfResidence\": \"<string>\"\n    },\n    {\n      \"partnerInvestorId\": \"<string>\",\n      \"email\": \"<string>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"dateOfBirth\": \"<string>\",\n      \"countryOfResidence\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "665da03a-4c67-4709-bc12-eb6d6655c015",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "investors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"investors\": [\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    },\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"partnerInvestorId\": \"string\",\n      \"status\": \"string\",\n      \"zestPersonId\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": false,\n        \"field\": \"string\"\n      }\n    },\n    {\n      \"partnerInvestorId\": \"string\",\n      \"status\": \"string\",\n      \"zestPersonId\": \"string\",\n      \"error\": {\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"retryable\": false,\n        \"field\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96443360-6911-4acf-bf4c-91b7f30b5cb7",
+              "name": "Invalid token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "investors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"investors\": [\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    },\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "af33c8d2-527b-40a7-925e-794c82ff1558",
+              "name": "Service not provisioned for partner API",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "investors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"investors\": [\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    },\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "402c0ba4-4378-4f60-a68f-8a3dde2b204f",
+              "name": "Idempotency-Key conflict (different body)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "investors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"investors\": [\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    },\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"detail\": \"Something went wrong\",\n  \"errorId\": \"string\",\n  \"validationErrors\": [\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    },\n    {\n      \"attribute\": \"string\",\n      \"code\": \"string\",\n      \"message\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7cf1d8c-9924-4924-b926-95af43d0579a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "investors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "Idempotency-Key",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"investors\": [\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    },\n    {\n      \"partnerInvestorId\": \"acme-inv-7341\",\n      \"email\": \"alice@example.com\",\n      \"firstName\": \"Alice\",\n      \"lastName\": \"Liddell\",\n      \"dateOfBirth\": \"1985-04-12\",\n      \"countryOfResidence\": \"AE\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox-api.zestequity.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b2b27972-d709-49cf-8e76-038e5dcc7aaf",
+    "name": "Zest equity public api Authentication Investors API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.",
+      "type": "text/plain"
+    }
+  }
+}

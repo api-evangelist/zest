@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication Investors API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Investors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Bulk create investors",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-api.zestequity.com/v1/investors",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates one or more investor records. Always returns 200 with a per-row { status, zestPersonId | error } result keyed by `partnerInvestorId`. Idempotent across replays: a repeated `partnerInvestorId` returns the existing Zest person id. `Idempotency-Key` is optional and provides response-level caching."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

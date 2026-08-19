@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication SPV Requests API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SPV Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List SPV requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/spv-requests",
+            "params": [
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of SPV requests scoped to the caller's `client_id`."
+        },
+        {
+          "info": {
+            "name": "Create an SPV request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-api.zestequity.com/v1/spv-requests",
+            "headers": [
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submits an SPV creation request. Validation runs against the spaas-contract template indicated by `templateId`. On success, Zest fires `spv_request.created`. Admin review materialises the SPV; success fires `spv_request.completed`."
+        },
+        {
+          "info": {
+            "name": "Get an SPV request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/v1/spv-requests/:slug",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single SPV request scoped to the caller's `client_id`."
+        },
+        {
+          "info": {
+            "name": "Cancel an SPV request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sandbox-api.zestequity.com/v1/spv-requests/:slug",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancels a pending-review SPV request. Returns 409 if the request is in a terminal state (approved, rejected, or already cancelled)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

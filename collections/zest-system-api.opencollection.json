@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Zest equity public api Authentication System API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Root endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/"
+          },
+          "docs": "Root endpoint"
+        },
+        {
+          "info": {
+            "name": "Outside world health check endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/public/hc"
+          },
+          "docs": "Outside world health check endpoint"
+        },
+        {
+          "info": {
+            "name": "OpenAPI Endpoint Specifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/openapi.json"
+          },
+          "docs": "OpenAPI Endpoint Specifications"
+        },
+        {
+          "info": {
+            "name": "API Endpoints Documentation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox-api.zestequity.com/docs"
+          },
+          "docs": "API Endpoints Documentation"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
