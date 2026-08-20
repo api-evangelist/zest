@@ -47,6 +47,16 @@ tags:
 - Escrow
 - SPaaS
 - MENA
+tags_raw:
+- Company
+- SPV
+- Private Markets
+- Fintech
+- Equity
+- Investors
+- Escrow
+- SPaaS
+- MENA
 - API
 maintainers:
 - FN: Kin Lane
@@ -156,6 +166,8 @@ apis:
   humanURL: https://docs.zestequity.com
   baseURL: https://public-api.zestequity.com
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
