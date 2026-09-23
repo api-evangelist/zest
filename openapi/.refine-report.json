@@ -1,14 +1,7 @@
 {
   "provider": "zest",
   "sources": [
-    "zest-authentication-api-openapi.yml",
-    "zest-contracts-api-openapi.yml",
-    "zest-investors-api-openapi.yml",
-    "zest-spv-requests-api-openapi.yml",
-    "zest-subscription-forms-api-openapi.yml",
-    "zest-subscription-fundings-api-openapi.yml",
-    "zest-subscriptions-api-openapi.yml",
-    "zest-system-api-openapi.yml"
+    "_original/zest-openapi-original.json"
   ],
   "outputs": [
     "zest-authentication-api-openapi.yml",
@@ -23,6 +16,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "zest-openapi-original.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "zest-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zest-contracts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zest-investors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zest-spv-requests-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zest-subscription-forms-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zest-subscription-fundings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zest-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zest-system-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

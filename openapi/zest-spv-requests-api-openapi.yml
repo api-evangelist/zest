@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Zest equity public api Authentication SPV Requests API
+  title: Zest equity public SPV Requests API
   version: 0.1.0
-  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+  description: Submit SPV creation requests, inspect their lifecycle, and cancel pending ones. SPV requests are reviewed by Zest admins and produce SPV materialisation on approval.
 servers:
 - url: https://sandbox-api.zestequity.com
   description: Staging
@@ -214,103 +214,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    SpvRequestCreate:
-      properties:
-        templateId:
-          type: string
-          title: Templateid
-          description: Contract template id provided during onboarding.
-          example: <your_template_id>
-        templateVersion:
-          type: string
-          title: Templateversion
-          description: Contract template version (e.g. '1.0.0').
-          example: 1.0.0
-        attributes:
-          type: object
-          title: Attributes
-          description: Flat attribute map validated against the template.
-          example:
-            deal_name: Acme Holdings Series A Syndicate
-            deal_slug: acme-series-a-2026
-            company_id: <your_company_id>
-            deal_type: <your_deal_type>
-            security_type: Equity
-            currency: USD
-            price_per_share:
-              currency: USD
-              value: '36.97'
-            is_fixed_price: true
-            minimum_ticket_size:
-              currency: USD
-              value: '1000'
-            start_date: '2026-06-01T00:00:00Z'
-            status_tag: Live
-            deal_stage: executing
-            investment_summary: Subscription into Acme Holdings Series A shares.
-            deal_documents_title: Acme Series A Deck
-            deal_documents_url: https://example.com/acme-deck.pdf
-            deal_documents_media_type: pdf
-            share_class_name: Class A
-            share_class_slug: acme-class-a
-            link_enabled: true
-            private_code: ACME01
-      type: object
-      required:
-      - templateId
-      - templateVersion
-      - attributes
-      title: SpvRequestCreate
-    PartnerValidationError:
-      properties:
-        attribute:
-          type: string
-          title: Attribute
-          description: Attribute path (e.g. 'deal_name', 'share_class.name').
-        code:
-          type: string
-          title: Code
-          description: Stable validation error code (see ValidationErrorCode enum).
-        message:
-          type: string
-          title: Message
-          description: Human-readable message.
-      type: object
-      required:
-      - attribute
-      - code
-      - message
-      title: PartnerValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    FeesAndCarryResponse:
-      properties:
-        shareClasses:
-          items:
-            $ref: '#/components/schemas/ShareClassFeesAndCarry'
-          type: array
-          title: Shareclasses
-      type: object
-      title: FeesAndCarryResponse
     SpvRequestStatus:
       type: string
       enum:
@@ -320,37 +223,6 @@ components:
       - cancelled
       title: SpvRequestStatus
       description: An enumeration.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AggregationResponse:
-      properties:
-        documents:
-          items: {}
-          type: array
-          title: Documents
-        count:
-          type: integer
-          title: Count
-          default: 0
-        skip:
-          type: integer
-          title: Skip
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 10
-      type: object
-      required:
-      - documents
-      title: AggregationResponse
     MaterialisedRefsResponse:
       properties:
         opportunitySlug:
@@ -372,28 +244,31 @@ components:
       - spSlug
       - spcSlug
       title: MaterialisedRefsResponse
-    ShareClassFeesAndCarry:
+    PartnerErrorResponse:
       properties:
-        name:
+        detail:
           type: string
-          title: Name
-        slug:
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
           type: string
-          title: Slug
-        managementFeePercent:
+          title: Errorid
+        code:
           type: string
-          title: Managementfeepercent
-        carryPercent:
-          type: string
-          title: Carrypercent
-        setupFee:
-          type: object
-          title: Setupfee
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
       type: object
       required:
-      - name
-      - slug
-      title: ShareClassFeesAndCarry
+      - code
+      title: PartnerErrorResponse
     SpvRequestResponse:
       properties:
         spvRequestSlug:
@@ -451,31 +326,156 @@ components:
       - createdAt
       - updatedAt
       title: SpvRequestResponse
-    PartnerErrorResponse:
+    PartnerValidationError:
       properties:
-        detail:
+        attribute:
           type: string
-          title: Detail
-          default: 'ex: Something went wrong'
-          examples:
-          - Something went wrong
-        errorId:
-          type: string
-          title: Errorid
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
         code:
           type: string
           title: Code
-          description: Stable top-level error code (see PartnerErrorCode enum).
-        validationErrors:
-          items:
-            $ref: '#/components/schemas/PartnerValidationError'
-          type: array
-          title: Validationerrors
-          description: Populated only when code='validation_error'.
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
       type: object
       required:
+      - attribute
       - code
-      title: PartnerErrorResponse
+      - message
+      title: PartnerValidationError
+    AggregationResponse:
+      properties:
+        documents:
+          items: {}
+          type: array
+          title: Documents
+        count:
+          type: integer
+          title: Count
+          default: 0
+        skip:
+          type: integer
+          title: Skip
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 10
+      type: object
+      required:
+      - documents
+      title: AggregationResponse
+    FeesAndCarryResponse:
+      properties:
+        shareClasses:
+          items:
+            $ref: '#/components/schemas/ShareClassFeesAndCarry'
+          type: array
+          title: Shareclasses
+      type: object
+      title: FeesAndCarryResponse
+    ShareClassFeesAndCarry:
+      properties:
+        name:
+          type: string
+          title: Name
+        slug:
+          type: string
+          title: Slug
+        managementFeePercent:
+          type: string
+          title: Managementfeepercent
+        carryPercent:
+          type: string
+          title: Carrypercent
+        setupFee:
+          type: object
+          title: Setupfee
+      type: object
+      required:
+      - name
+      - slug
+      title: ShareClassFeesAndCarry
+    SpvRequestCreate:
+      properties:
+        templateId:
+          type: string
+          title: Templateid
+          description: Contract template id provided during onboarding.
+          example: <your_template_id>
+        templateVersion:
+          type: string
+          title: Templateversion
+          description: Contract template version (e.g. '1.0.0').
+          example: 1.0.0
+        attributes:
+          type: object
+          title: Attributes
+          description: Flat attribute map validated against the template.
+          example:
+            deal_name: Acme Holdings Series A Syndicate
+            deal_slug: acme-series-a-2026
+            company_id: <your_company_id>
+            deal_type: <your_deal_type>
+            security_type: Equity
+            currency: USD
+            price_per_share:
+              currency: USD
+              value: '36.97'
+            is_fixed_price: true
+            minimum_ticket_size:
+              currency: USD
+              value: '1000'
+            start_date: '2026-06-01T00:00:00Z'
+            status_tag: Live
+            deal_stage: executing
+            investment_summary: Subscription into Acme Holdings Series A shares.
+            deal_documents_title: Acme Series A Deck
+            deal_documents_url: https://example.com/acme-deck.pdf
+            deal_documents_media_type: pdf
+            share_class_name: Class A
+            share_class_slug: acme-class-a
+            link_enabled: true
+            private_code: ACME01
+      type: object
+      required:
+      - templateId
+      - templateVersion
+      - attributes
+      title: SpvRequestCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

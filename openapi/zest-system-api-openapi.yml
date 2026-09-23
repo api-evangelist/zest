@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Zest equity public api Authentication System API
+  title: Zest equity public System API
   version: 0.1.0
-  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+  description: Service health and OpenAPI introspection endpoints.
 servers:
 - url: https://sandbox-api.zestequity.com
   description: Staging

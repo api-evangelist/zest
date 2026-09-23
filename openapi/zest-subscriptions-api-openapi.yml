@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Zest equity public api Authentication Subscriptions API
+  title: Zest equity public Subscriptions API
   version: 0.1.0
-  description: OAuth 2.0 JWT-Bearer assertion grant. Exchange a partner-signed JWT for a short-lived bearer access token, then send that token in the Authorization header on every partner API call.
+  description: Create one or more subscriptions for a single SPV.
 servers:
 - url: https://sandbox-api.zestequity.com
   description: Staging
@@ -83,88 +83,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    PartnerValidationError:
-      properties:
-        attribute:
-          type: string
-          title: Attribute
-          description: Attribute path (e.g. 'deal_name', 'share_class.name').
-        code:
-          type: string
-          title: Code
-          description: Stable validation error code (see ValidationErrorCode enum).
-        message:
-          type: string
-          title: Message
-          description: Human-readable message.
-      type: object
-      required:
-      - attribute
-      - code
-      - message
-      title: PartnerValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SubscriptionResult:
-      properties:
-        partnerSubscriptionId:
-          type: string
-          title: Partnersubscriptionid
-        subscriptionSlug:
-          type: string
-          title: Subscriptionslug
-        spvSlug:
-          type: string
-          title: Spvslug
-        personId:
-          type: string
-          title: Personid
-        status:
-          type: string
-          title: Status
-        lumpSum:
-          type: object
-          title: Lumpsum
-        shareClassSlug:
-          type: string
-          title: Shareclassslug
-      type: object
-      required:
-      - subscriptionSlug
-      - spvSlug
-      - personId
-      - status
-      - lumpSum
-      - shareClassSlug
-      title: SubscriptionResult
     PartnerErrorResponse:
       properties:
         detail:
@@ -190,6 +108,37 @@ components:
       required:
       - code
       title: PartnerErrorResponse
+    SubscriptionBulkCreate:
+      properties:
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/SubscriptionCreateRow'
+          type: array
+          title: Subscriptions
+      type: object
+      required:
+      - subscriptions
+      title: SubscriptionBulkCreate
+    PartnerValidationError:
+      properties:
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
+      type: object
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
     SubscriptionBulkResponse:
       properties:
         results:
@@ -229,17 +178,68 @@ components:
       - lumpSum
       - shareClassSlug
       title: SubscriptionCreateRow
-    SubscriptionBulkCreate:
+    HTTPValidationError:
       properties:
-        subscriptions:
+        detail:
           items:
-            $ref: '#/components/schemas/SubscriptionCreateRow'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Subscriptions
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - subscriptions
-      title: SubscriptionBulkCreate
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SubscriptionResult:
+      properties:
+        partnerSubscriptionId:
+          type: string
+          title: Partnersubscriptionid
+        subscriptionSlug:
+          type: string
+          title: Subscriptionslug
+        spvSlug:
+          type: string
+          title: Spvslug
+        personId:
+          type: string
+          title: Personid
+        status:
+          type: string
+          title: Status
+        lumpSum:
+          type: object
+          title: Lumpsum
+        shareClassSlug:
+          type: string
+          title: Shareclassslug
+      type: object
+      required:
+      - subscriptionSlug
+      - spvSlug
+      - personId
+      - status
+      - lumpSum
+      - shareClassSlug
+      title: SubscriptionResult
   securitySchemes:
     HTTPBearer:
       type: http
