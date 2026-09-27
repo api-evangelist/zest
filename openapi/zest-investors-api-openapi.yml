@@ -83,6 +83,82 @@ components:
       - partnerInvestorId
       - status
       title: InvestorRowResult
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    InvestorBulkResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/InvestorRowResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: InvestorBulkResponse
+    PartnerErrorResponse:
+      properties:
+        detail:
+          type: string
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
+      type: object
+      required:
+      - code
+      title: PartnerErrorResponse
+    InvestorBulkCreate:
+      properties:
+        investors:
+          items:
+            $ref: '#/components/schemas/InvestorCreateRow'
+          type: array
+          title: Investors
+      type: object
+      required:
+      - investors
+      title: InvestorBulkCreate
+    InvestorRowError:
+      properties:
+        code:
+          type: string
+          title: Code
+        field:
+          type: string
+          title: Field
+        message:
+          type: string
+          title: Message
+        retryable:
+          type: boolean
+          title: Retryable
+      type: object
+      required:
+      - code
+      - message
+      - retryable
+      title: InvestorRowError
     InvestorCreateRow:
       properties:
         partnerInvestorId:
@@ -120,51 +196,6 @@ components:
       - lastName
       - dateOfBirth
       title: InvestorCreateRow
-    InvestorRowError:
-      properties:
-        code:
-          type: string
-          title: Code
-        field:
-          type: string
-          title: Field
-        message:
-          type: string
-          title: Message
-        retryable:
-          type: boolean
-          title: Retryable
-      type: object
-      required:
-      - code
-      - message
-      - retryable
-      title: InvestorRowError
-    PartnerErrorResponse:
-      properties:
-        detail:
-          type: string
-          title: Detail
-          default: 'ex: Something went wrong'
-          examples:
-          - Something went wrong
-        errorId:
-          type: string
-          title: Errorid
-        code:
-          type: string
-          title: Code
-          description: Stable top-level error code (see PartnerErrorCode enum).
-        validationErrors:
-          items:
-            $ref: '#/components/schemas/PartnerValidationError'
-          type: array
-          title: Validationerrors
-          description: Populated only when code='validation_error'.
-      type: object
-      required:
-      - code
-      title: PartnerErrorResponse
     PartnerValidationError:
       properties:
         attribute:
@@ -185,15 +216,6 @@ components:
       - code
       - message
       title: PartnerValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -215,28 +237,6 @@ components:
       - msg
       - type
       title: ValidationError
-    InvestorBulkCreate:
-      properties:
-        investors:
-          items:
-            $ref: '#/components/schemas/InvestorCreateRow'
-          type: array
-          title: Investors
-      type: object
-      required:
-      - investors
-      title: InvestorBulkCreate
-    InvestorBulkResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/InvestorRowResult'
-          type: array
-          title: Results
-      type: object
-      required:
-      - results
-      title: InvestorBulkResponse
   securitySchemes:
     HTTPBearer:
       type: http

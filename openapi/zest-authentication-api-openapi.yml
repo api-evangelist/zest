@@ -54,6 +54,47 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TokenResponse:
+      properties:
+        accessToken:
+          type: string
+          title: Accesstoken
+        refreshToken:
+          type: string
+          title: Refreshtoken
+      type: object
+      required:
+      - accessToken
+      title: TokenResponse
+    InfoResponse:
+      properties:
+        clientType:
+          type: string
+          enum:
+          - service
+          - user
+          - application
+          title: Clienttype
+        clientId:
+          type: string
+          title: Clientid
+        metadata:
+          type: object
+          title: Metadata
+      type: object
+      required:
+      - clientType
+      - clientId
+      title: InfoResponse
     Body_exchangeJwtAssertion:
       properties:
         grant_type:
@@ -67,27 +108,6 @@ components:
       - grant_type
       - assertion
       title: Body_exchangeJwtAssertion
-    TokenResponse:
-      properties:
-        accessToken:
-          type: string
-          title: Accesstoken
-        refreshToken:
-          type: string
-          title: Refreshtoken
-      type: object
-      required:
-      - accessToken
-      title: TokenResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -109,26 +129,6 @@ components:
       - msg
       - type
       title: ValidationError
-    InfoResponse:
-      properties:
-        clientType:
-          type: string
-          enum:
-          - service
-          - user
-          - application
-          title: Clienttype
-        clientId:
-          type: string
-          title: Clientid
-        metadata:
-          type: object
-          title: Metadata
-      type: object
-      required:
-      - clientType
-      - clientId
-      title: InfoResponse
   securitySchemes:
     HTTPBearer:
       type: http

@@ -214,36 +214,15 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    SpvRequestStatus:
-      type: string
-      enum:
-      - pending-review
-      - approved
-      - rejected
-      - cancelled
-      title: SpvRequestStatus
-      description: An enumeration.
-    MaterialisedRefsResponse:
+    HTTPValidationError:
       properties:
-        opportunitySlug:
-          type: string
-          title: Opportunityslug
-        vehicleSlug:
-          type: string
-          title: Vehicleslug
-        spSlug:
-          type: string
-          title: Spslug
-        spcSlug:
-          type: string
-          title: Spcslug
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - opportunitySlug
-      - vehicleSlug
-      - spSlug
-      - spcSlug
-      title: MaterialisedRefsResponse
+      title: HTTPValidationError
     PartnerErrorResponse:
       properties:
         detail:
@@ -269,6 +248,95 @@ components:
       required:
       - code
       title: PartnerErrorResponse
+    SpvRequestCreate:
+      properties:
+        templateId:
+          type: string
+          title: Templateid
+          description: Contract template id provided during onboarding.
+          example: <your_template_id>
+        templateVersion:
+          type: string
+          title: Templateversion
+          description: Contract template version (e.g. '1.0.0').
+          example: 1.0.0
+        attributes:
+          type: object
+          title: Attributes
+          description: Flat attribute map validated against the template.
+          example:
+            deal_name: Acme Holdings Series A Syndicate
+            deal_slug: acme-series-a-2026
+            company_id: <your_company_id>
+            deal_type: <your_deal_type>
+            security_type: Equity
+            currency: USD
+            price_per_share:
+              currency: USD
+              value: '36.97'
+            is_fixed_price: true
+            minimum_ticket_size:
+              currency: USD
+              value: '1000'
+            start_date: '2026-06-01T00:00:00Z'
+            status_tag: Live
+            deal_stage: executing
+            investment_summary: Subscription into Acme Holdings Series A shares.
+            deal_documents_title: Acme Series A Deck
+            deal_documents_url: https://example.com/acme-deck.pdf
+            deal_documents_media_type: pdf
+            share_class_name: Class A
+            share_class_slug: acme-class-a
+            link_enabled: true
+            private_code: ACME01
+      type: object
+      required:
+      - templateId
+      - templateVersion
+      - attributes
+      title: SpvRequestCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    MaterialisedRefsResponse:
+      properties:
+        opportunitySlug:
+          type: string
+          title: Opportunityslug
+        vehicleSlug:
+          type: string
+          title: Vehicleslug
+        spSlug:
+          type: string
+          title: Spslug
+        spcSlug:
+          type: string
+          title: Spcslug
+      type: object
+      required:
+      - opportunitySlug
+      - vehicleSlug
+      - spSlug
+      - spcSlug
+      title: MaterialisedRefsResponse
     SpvRequestResponse:
       properties:
         spvRequestSlug:
@@ -326,26 +394,6 @@ components:
       - createdAt
       - updatedAt
       title: SpvRequestResponse
-    PartnerValidationError:
-      properties:
-        attribute:
-          type: string
-          title: Attribute
-          description: Attribute path (e.g. 'deal_name', 'share_class.name').
-        code:
-          type: string
-          title: Code
-          description: Stable validation error code (see ValidationErrorCode enum).
-        message:
-          type: string
-          title: Message
-          description: Human-readable message.
-      type: object
-      required:
-      - attribute
-      - code
-      - message
-      title: PartnerValidationError
     AggregationResponse:
       properties:
         documents:
@@ -377,6 +425,35 @@ components:
           title: Shareclasses
       type: object
       title: FeesAndCarryResponse
+    SpvRequestStatus:
+      type: string
+      enum:
+      - pending-review
+      - approved
+      - rejected
+      - cancelled
+      title: SpvRequestStatus
+      description: An enumeration.
+    PartnerValidationError:
+      properties:
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
+      type: object
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
     ShareClassFeesAndCarry:
       properties:
         name:
@@ -399,83 +476,6 @@ components:
       - name
       - slug
       title: ShareClassFeesAndCarry
-    SpvRequestCreate:
-      properties:
-        templateId:
-          type: string
-          title: Templateid
-          description: Contract template id provided during onboarding.
-          example: <your_template_id>
-        templateVersion:
-          type: string
-          title: Templateversion
-          description: Contract template version (e.g. '1.0.0').
-          example: 1.0.0
-        attributes:
-          type: object
-          title: Attributes
-          description: Flat attribute map validated against the template.
-          example:
-            deal_name: Acme Holdings Series A Syndicate
-            deal_slug: acme-series-a-2026
-            company_id: <your_company_id>
-            deal_type: <your_deal_type>
-            security_type: Equity
-            currency: USD
-            price_per_share:
-              currency: USD
-              value: '36.97'
-            is_fixed_price: true
-            minimum_ticket_size:
-              currency: USD
-              value: '1000'
-            start_date: '2026-06-01T00:00:00Z'
-            status_tag: Live
-            deal_stage: executing
-            investment_summary: Subscription into Acme Holdings Series A shares.
-            deal_documents_title: Acme Series A Deck
-            deal_documents_url: https://example.com/acme-deck.pdf
-            deal_documents_media_type: pdf
-            share_class_name: Class A
-            share_class_slug: acme-class-a
-            link_enabled: true
-            private_code: ACME01
-      type: object
-      required:
-      - templateId
-      - templateVersion
-      - attributes
-      title: SpvRequestCreate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

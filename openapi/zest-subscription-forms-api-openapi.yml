@@ -95,6 +95,15 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PartnerErrorResponse:
       properties:
         detail:
@@ -120,26 +129,6 @@ components:
       required:
       - code
       title: PartnerErrorResponse
-    PartnerValidationError:
-      properties:
-        attribute:
-          type: string
-          title: Attribute
-          description: Attribute path (e.g. 'deal_name', 'share_class.name').
-        code:
-          type: string
-          title: Code
-          description: Stable validation error code (see ValidationErrorCode enum).
-        message:
-          type: string
-          title: Message
-          description: Human-readable message.
-      type: object
-      required:
-      - attribute
-      - code
-      - message
-      title: PartnerValidationError
     FormUploadResponse:
       properties:
         subscriptionSlug:
@@ -176,15 +165,26 @@ components:
       required:
       - file
       title: Body_uploadSubscriptionForm
-    HTTPValidationError:
+    PartnerValidationError:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
       type: object
-      title: HTTPValidationError
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
     ValidationError:
       properties:
         loc:
