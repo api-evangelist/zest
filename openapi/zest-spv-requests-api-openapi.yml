@@ -214,40 +214,28 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    HTTPValidationError:
+    ShareClassFeesAndCarry:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PartnerErrorResponse:
-      properties:
-        detail:
+        name:
           type: string
-          title: Detail
-          default: 'ex: Something went wrong'
-          examples:
-          - Something went wrong
-        errorId:
+          title: Name
+        slug:
           type: string
-          title: Errorid
-        code:
+          title: Slug
+        managementFeePercent:
           type: string
-          title: Code
-          description: Stable top-level error code (see PartnerErrorCode enum).
-        validationErrors:
-          items:
-            $ref: '#/components/schemas/PartnerValidationError'
-          type: array
-          title: Validationerrors
-          description: Populated only when code='validation_error'.
+          title: Managementfeepercent
+        carryPercent:
+          type: string
+          title: Carrypercent
+        setupFee:
+          type: object
+          title: Setupfee
       type: object
       required:
-      - code
-      title: PartnerErrorResponse
+      - name
+      - slug
+      title: ShareClassFeesAndCarry
     SpvRequestCreate:
       properties:
         templateId:
@@ -316,6 +304,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     MaterialisedRefsResponse:
       properties:
         opportunitySlug:
@@ -337,6 +334,57 @@ components:
       - spSlug
       - spcSlug
       title: MaterialisedRefsResponse
+    AggregationResponse:
+      properties:
+        documents:
+          items: {}
+          type: array
+          title: Documents
+        count:
+          type: integer
+          title: Count
+          default: 0
+        skip:
+          type: integer
+          title: Skip
+          default: 0
+        limit:
+          type: integer
+          title: Limit
+          default: 10
+      type: object
+      required:
+      - documents
+      title: AggregationResponse
+    PartnerValidationError:
+      properties:
+        attribute:
+          type: string
+          title: Attribute
+          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+        code:
+          type: string
+          title: Code
+          description: Stable validation error code (see ValidationErrorCode enum).
+        message:
+          type: string
+          title: Message
+          description: Human-readable message.
+      type: object
+      required:
+      - attribute
+      - code
+      - message
+      title: PartnerValidationError
+    FeesAndCarryResponse:
+      properties:
+        shareClasses:
+          items:
+            $ref: '#/components/schemas/ShareClassFeesAndCarry'
+          type: array
+          title: Shareclasses
+      type: object
+      title: FeesAndCarryResponse
     SpvRequestResponse:
       properties:
         spvRequestSlug:
@@ -394,37 +442,6 @@ components:
       - createdAt
       - updatedAt
       title: SpvRequestResponse
-    AggregationResponse:
-      properties:
-        documents:
-          items: {}
-          type: array
-          title: Documents
-        count:
-          type: integer
-          title: Count
-          default: 0
-        skip:
-          type: integer
-          title: Skip
-          default: 0
-        limit:
-          type: integer
-          title: Limit
-          default: 10
-      type: object
-      required:
-      - documents
-      title: AggregationResponse
-    FeesAndCarryResponse:
-      properties:
-        shareClasses:
-          items:
-            $ref: '#/components/schemas/ShareClassFeesAndCarry'
-          type: array
-          title: Shareclasses
-      type: object
-      title: FeesAndCarryResponse
     SpvRequestStatus:
       type: string
       enum:
@@ -434,48 +451,31 @@ components:
       - cancelled
       title: SpvRequestStatus
       description: An enumeration.
-    PartnerValidationError:
+    PartnerErrorResponse:
       properties:
-        attribute:
+        detail:
           type: string
-          title: Attribute
-          description: Attribute path (e.g. 'deal_name', 'share_class.name').
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
         code:
           type: string
           title: Code
-          description: Stable validation error code (see ValidationErrorCode enum).
-        message:
-          type: string
-          title: Message
-          description: Human-readable message.
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
       type: object
       required:
-      - attribute
       - code
-      - message
-      title: PartnerValidationError
-    ShareClassFeesAndCarry:
-      properties:
-        name:
-          type: string
-          title: Name
-        slug:
-          type: string
-          title: Slug
-        managementFeePercent:
-          type: string
-          title: Managementfeepercent
-        carryPercent:
-          type: string
-          title: Carrypercent
-        setupFee:
-          type: object
-          title: Setupfee
-      type: object
-      required:
-      - name
-      - slug
-      title: ShareClassFeesAndCarry
+      title: PartnerErrorResponse
   securitySchemes:
     HTTPBearer:
       type: http

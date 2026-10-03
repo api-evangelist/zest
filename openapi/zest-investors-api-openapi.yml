@@ -65,24 +65,27 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    InvestorRowResult:
+    ValidationError:
       properties:
-        partnerInvestorId:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Partnerinvestorid
-        status:
+          title: Message
+        type:
           type: string
-          title: Status
-        zestPersonId:
-          type: string
-          title: Zestpersonid
-        error:
-          $ref: '#/components/schemas/InvestorRowError'
+          title: Error Type
       type: object
       required:
-      - partnerInvestorId
-      - status
-      title: InvestorRowResult
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -92,42 +95,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    InvestorBulkResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/InvestorRowResult'
-          type: array
-          title: Results
-      type: object
-      required:
-      - results
-      title: InvestorBulkResponse
-    PartnerErrorResponse:
-      properties:
-        detail:
-          type: string
-          title: Detail
-          default: 'ex: Something went wrong'
-          examples:
-          - Something went wrong
-        errorId:
-          type: string
-          title: Errorid
-        code:
-          type: string
-          title: Code
-          description: Stable top-level error code (see PartnerErrorCode enum).
-        validationErrors:
-          items:
-            $ref: '#/components/schemas/PartnerValidationError'
-          type: array
-          title: Validationerrors
-          description: Populated only when code='validation_error'.
-      type: object
-      required:
-      - code
-      title: PartnerErrorResponse
     InvestorBulkCreate:
       properties:
         investors:
@@ -139,26 +106,6 @@ components:
       required:
       - investors
       title: InvestorBulkCreate
-    InvestorRowError:
-      properties:
-        code:
-          type: string
-          title: Code
-        field:
-          type: string
-          title: Field
-        message:
-          type: string
-          title: Message
-        retryable:
-          type: boolean
-          title: Retryable
-      type: object
-      required:
-      - code
-      - message
-      - retryable
-      title: InvestorRowError
     InvestorCreateRow:
       properties:
         partnerInvestorId:
@@ -196,6 +143,55 @@ components:
       - lastName
       - dateOfBirth
       title: InvestorCreateRow
+    InvestorRowResult:
+      properties:
+        partnerInvestorId:
+          type: string
+          title: Partnerinvestorid
+        status:
+          type: string
+          title: Status
+        zestPersonId:
+          type: string
+          title: Zestpersonid
+        error:
+          $ref: '#/components/schemas/InvestorRowError'
+      type: object
+      required:
+      - partnerInvestorId
+      - status
+      title: InvestorRowResult
+    InvestorBulkResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/InvestorRowResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: InvestorBulkResponse
+    InvestorRowError:
+      properties:
+        code:
+          type: string
+          title: Code
+        field:
+          type: string
+          title: Field
+        message:
+          type: string
+          title: Message
+        retryable:
+          type: boolean
+          title: Retryable
+      type: object
+      required:
+      - code
+      - message
+      - retryable
+      title: InvestorRowError
     PartnerValidationError:
       properties:
         attribute:
@@ -216,27 +212,31 @@ components:
       - code
       - message
       title: PartnerValidationError
-    ValidationError:
+    PartnerErrorResponse:
       properties:
-        loc:
+        detail:
+          type: string
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/PartnerValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - code
+      title: PartnerErrorResponse
   securitySchemes:
     HTTPBearer:
       type: http

@@ -54,6 +54,40 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    Body_exchangeJwtAssertion:
+      properties:
+        grant_type:
+          type: string
+          title: Grant Type
+        assertion:
+          type: string
+          title: Assertion
+      type: object
+      required:
+      - grant_type
+      - assertion
+      title: Body_exchangeJwtAssertion
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -95,40 +129,6 @@ components:
       - clientType
       - clientId
       title: InfoResponse
-    Body_exchangeJwtAssertion:
-      properties:
-        grant_type:
-          type: string
-          title: Grant Type
-        assertion:
-          type: string
-          title: Assertion
-      type: object
-      required:
-      - grant_type
-      - assertion
-      title: Body_exchangeJwtAssertion
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http
