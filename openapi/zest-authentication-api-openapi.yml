@@ -67,6 +67,18 @@ components:
       - grant_type
       - assertion
       title: Body_exchangeJwtAssertion
+    TokenResponse:
+      properties:
+        accessToken:
+          type: string
+          title: Accesstoken
+        refreshToken:
+          type: string
+          title: Refreshtoken
+      type: object
+      required:
+      - accessToken
+      title: TokenResponse
     ValidationError:
       properties:
         loc:
@@ -97,18 +109,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    TokenResponse:
-      properties:
-        accessToken:
-          type: string
-          title: Accesstoken
-        refreshToken:
-          type: string
-          title: Refreshtoken
-      type: object
-      required:
-      - accessToken
-      title: TokenResponse
     InfoResponse:
       properties:
         clientType:

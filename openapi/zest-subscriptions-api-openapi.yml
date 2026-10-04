@@ -83,36 +83,31 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
+    PartnerErrorResponse:
       properties:
         detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
+          type: string
           title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
       type: object
-      title: HTTPValidationError
+      required:
+      - code
+      title: PartnerErrorResponse
     SubscriptionCreateRow:
       properties:
         partnerSubscriptionId:
@@ -173,28 +168,6 @@ components:
       - lumpSum
       - shareClassSlug
       title: SubscriptionResult
-    SubscriptionBulkCreate:
-      properties:
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/SubscriptionCreateRow'
-          type: array
-          title: Subscriptions
-      type: object
-      required:
-      - subscriptions
-      title: SubscriptionBulkCreate
-    SubscriptionBulkResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/SubscriptionResult'
-          type: array
-          title: Results
-      type: object
-      required:
-      - results
-      title: SubscriptionBulkResponse
     PartnerValidationError:
       properties:
         attribute:
@@ -215,31 +188,58 @@ components:
       - code
       - message
       title: PartnerValidationError
-    PartnerErrorResponse:
+    ValidationError:
       properties:
-        detail:
-          type: string
-          title: Detail
-          default: 'ex: Something went wrong'
-          examples:
-          - Something went wrong
-        errorId:
-          type: string
-          title: Errorid
-        code:
-          type: string
-          title: Code
-          description: Stable top-level error code (see PartnerErrorCode enum).
-        validationErrors:
+        loc:
           items:
-            $ref: '#/components/schemas/PartnerValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Validationerrors
-          description: Populated only when code='validation_error'.
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - code
-      title: PartnerErrorResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SubscriptionBulkResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/SubscriptionResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: SubscriptionBulkResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SubscriptionBulkCreate:
+      properties:
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/SubscriptionCreateRow'
+          type: array
+          title: Subscriptions
+      type: object
+      required:
+      - subscriptions
+      title: SubscriptionBulkCreate
   securitySchemes:
     HTTPBearer:
       type: http

@@ -95,46 +95,31 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
+    PartnerErrorResponse:
       properties:
         detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    Body_uploadSubscriptionForm:
-      properties:
-        file:
           type: string
-          format: binary
-          title: File
+          title: Detail
+          default: 'ex: Something went wrong'
+          examples:
+          - Something went wrong
+        errorId:
+          type: string
+          title: Errorid
+        code:
+          type: string
+          title: Code
+          description: Stable top-level error code (see PartnerErrorCode enum).
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/PartnerValidationError'
+          type: array
+          title: Validationerrors
+          description: Populated only when code='validation_error'.
       type: object
       required:
-      - file
-      title: Body_uploadSubscriptionForm
+      - code
+      title: PartnerErrorResponse
     PartnerValidationError:
       properties:
         attribute:
@@ -181,31 +166,46 @@ components:
       - subscriptionFormUrl
       - uploadedAt
       title: FormUploadResponse
-    PartnerErrorResponse:
+    Body_uploadSubscriptionForm:
       properties:
-        detail:
+        file:
           type: string
-          title: Detail
-          default: 'ex: Something went wrong'
-          examples:
-          - Something went wrong
-        errorId:
-          type: string
-          title: Errorid
-        code:
-          type: string
-          title: Code
-          description: Stable top-level error code (see PartnerErrorCode enum).
-        validationErrors:
-          items:
-            $ref: '#/components/schemas/PartnerValidationError'
-          type: array
-          title: Validationerrors
-          description: Populated only when code='validation_error'.
+          format: binary
+          title: File
       type: object
       required:
-      - code
-      title: PartnerErrorResponse
+      - file
+      title: Body_uploadSubscriptionForm
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http
